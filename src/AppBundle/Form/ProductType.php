@@ -14,14 +14,18 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name')->add('description')->add('price');
-    }/**
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Product'
-        ));
+        $resolver->setDefaults(
+            [
+                'data_class' => 'AppBundle\Entity\Product',
+            ]
+        );
     }
 
     /**
