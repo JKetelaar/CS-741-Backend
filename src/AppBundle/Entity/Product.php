@@ -104,6 +104,16 @@ class Product
     }
 
     /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * Set name.
      *
      * @param string $name
@@ -118,13 +128,13 @@ class Product
     }
 
     /**
-     * Get name.
+     * Get description.
      *
      * @return string
      */
-    public function getName()
+    public function getDescription()
     {
-        return $this->name;
+        return $this->description;
     }
 
     /**
@@ -142,13 +152,13 @@ class Product
     }
 
     /**
-     * Get description.
+     * Get price.
      *
-     * @return string
+     * @return float
      */
-    public function getDescription()
+    public function getPrice()
     {
-        return $this->description;
+        return $this->price;
     }
 
     /**
@@ -166,13 +176,13 @@ class Product
     }
 
     /**
-     * Get price.
+     * Get promoPrice.
      *
-     * @return float
+     * @return float|null
      */
-    public function getPrice()
+    public function getPromoPrice()
     {
-        return $this->price;
+        return $this->promoPrice;
     }
 
     /**
@@ -190,13 +200,13 @@ class Product
     }
 
     /**
-     * Get promoPrice.
+     * Get promoFrom.
      *
-     * @return float|null
+     * @return \DateTime|null
      */
-    public function getPromoPrice()
+    public function getPromoFrom()
     {
-        return $this->promoPrice;
+        return $this->promoFrom;
     }
 
     /**
@@ -214,13 +224,13 @@ class Product
     }
 
     /**
-     * Get promoFrom.
+     * Get promoTo.
      *
      * @return \DateTime|null
      */
-    public function getPromoFrom()
+    public function getPromoTo()
     {
-        return $this->promoFrom;
+        return $this->promoTo;
     }
 
     /**
@@ -238,13 +248,13 @@ class Product
     }
 
     /**
-     * Get promoTo.
+     * Get active.
      *
-     * @return \DateTime|null
+     * @return bool
      */
-    public function getPromoTo()
+    public function getActive()
     {
-        return $this->promoTo;
+        return $this->active;
     }
 
     /**
@@ -262,13 +272,13 @@ class Product
     }
 
     /**
-     * Get active.
+     * Get quantity.
      *
-     * @return bool
+     * @return int
      */
-    public function getActive()
+    public function getQuantity()
     {
-        return $this->active;
+        return $this->quantity;
     }
 
     /**
@@ -286,13 +296,13 @@ class Product
     }
 
     /**
-     * Get quantity.
+     * Get creationDate.
      *
-     * @return int
+     * @return \DateTime
      */
-    public function getQuantity()
+    public function getCreationDate()
     {
-        return $this->quantity;
+        return $this->creationDate;
     }
 
     /**
@@ -307,15 +317,5 @@ class Product
         $this->creationDate = $creationDate;
 
         return $this;
-    }
-
-    /**
-     * Get creationDate.
-     *
-     * @return \DateTime
-     */
-    public function getCreationDate()
-    {
-        return $this->creationDate;
     }
 }
