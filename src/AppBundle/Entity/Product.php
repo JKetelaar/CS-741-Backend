@@ -42,9 +42,59 @@ class Product
      */
     private $price;
 
+    /**
+     * @var float|null
+     *
+     * @ORM\Column(name="promo_price", type="float", nullable=true)
+     */
+    private $promoPrice;
 
     /**
-     * Get id
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="promo_from", type="datetime", nullable=true)
+     */
+    private $promoFrom;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="promo_to", type="datetime", nullable=true)
+     */
+    private $promoTo;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="quantity", type="integer")
+     */
+    private $quantity;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creation_date", type="datetime")
+     */
+    private $creationDate;
+
+    /**
+     * Product constructor.
+     */
+    public function __construct()
+    {
+        $this->active = true;
+        $this->creationDate = new \DateTime();
+    }
+
+    /**
+     * Get id.
      *
      * @return int
      */
@@ -54,17 +104,7 @@ class Product
     }
 
     /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -78,17 +118,17 @@ class Product
     }
 
     /**
-     * Get description
+     * Get name.
      *
      * @return string
      */
-    public function getDescription()
+    public function getName()
     {
-        return $this->description;
+        return $this->name;
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -102,17 +142,17 @@ class Product
     }
 
     /**
-     * Get price
+     * Get description.
      *
-     * @return float
+     * @return string
      */
-    public function getPrice()
+    public function getDescription()
     {
-        return $this->price;
+        return $this->description;
     }
 
     /**
-     * Set price
+     * Set price.
      *
      * @param float $price
      *
@@ -124,5 +164,158 @@ class Product
 
         return $this;
     }
-}
 
+    /**
+     * Get price.
+     *
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set promoPrice.
+     *
+     * @param float|null $promoPrice
+     *
+     * @return Product
+     */
+    public function setPromoPrice($promoPrice = null)
+    {
+        $this->promoPrice = $promoPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get promoPrice.
+     *
+     * @return float|null
+     */
+    public function getPromoPrice()
+    {
+        return $this->promoPrice;
+    }
+
+    /**
+     * Set promoFrom.
+     *
+     * @param \DateTime|null $promoFrom
+     *
+     * @return Product
+     */
+    public function setPromoFrom($promoFrom = null)
+    {
+        $this->promoFrom = $promoFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get promoFrom.
+     *
+     * @return \DateTime|null
+     */
+    public function getPromoFrom()
+    {
+        return $this->promoFrom;
+    }
+
+    /**
+     * Set promoTo.
+     *
+     * @param \DateTime|null $promoTo
+     *
+     * @return Product
+     */
+    public function setPromoTo($promoTo = null)
+    {
+        $this->promoTo = $promoTo;
+
+        return $this;
+    }
+
+    /**
+     * Get promoTo.
+     *
+     * @return \DateTime|null
+     */
+    public function getPromoTo()
+    {
+        return $this->promoTo;
+    }
+
+    /**
+     * Set active.
+     *
+     * @param bool $active
+     *
+     * @return Product
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active.
+     *
+     * @return bool
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set quantity.
+     *
+     * @param int $quantity
+     *
+     * @return Product
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * Get quantity.
+     *
+     * @return int
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * Set creationDate.
+     *
+     * @param \DateTime $creationDate
+     *
+     * @return Product
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creationDate.
+     *
+     * @return \DateTime
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+}
