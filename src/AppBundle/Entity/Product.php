@@ -85,6 +85,13 @@ class Product
     private $creationDate;
 
     /**
+     * @var ProductImage[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductImage", mappedBy="product")
+     */
+    private $images;
+
+    /**
      * Product constructor.
      */
     public function __construct()
@@ -315,6 +322,26 @@ class Product
     public function setCreationDate($creationDate)
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * @return ProductImage[]
+     */
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param ProductImage[] $images
+     *
+     * @return Product
+     */
+    public function setImages(array $images): Product
+    {
+        $this->images = $images;
 
         return $this;
     }
