@@ -98,6 +98,7 @@ class Product
     {
         $this->active = true;
         $this->creationDate = new \DateTime();
+        $this->images = [];
     }
 
     /**
@@ -329,7 +330,7 @@ class Product
     /**
      * @return ProductImage[]
      */
-    public function getImages(): array
+    public function getImages()
     {
         return $this->images;
     }
