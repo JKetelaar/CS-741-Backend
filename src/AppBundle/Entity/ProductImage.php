@@ -36,7 +36,7 @@ class ProductImage
     private $date;
 
     /**
-     * @var \stdClass
+     * @var Product
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Product", inversedBy="images")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
@@ -92,19 +92,19 @@ class ProductImage
     }
 
     /**
-     * @return \stdClass
+     * @return Product
      */
-    public function getProduct(): \stdClass
+    public function getProduct(): Product
     {
         return $this->product;
     }
 
     /**
-     * @param \stdClass $product
+     * @param Product $product
      *
      * @return ProductImage
      */
-    public function setProduct(\stdClass $product): ProductImage
+    public function setProduct(Product $product): ProductImage
     {
         $this->product = $product;
 
