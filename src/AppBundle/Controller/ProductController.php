@@ -28,11 +28,11 @@ class ProductController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
 
-        $products = $em->getRepository('AppBundle:Product')->findAll();
+        $products = $entityManager->getRepository('AppBundle:Product')->findAll();
 
-        return new JsonResponse(SerializerManager::normalize($products));
+        return new JsonResponse(SerializerManager::normalize($products, 'json', ['minimal']));
     }
 
     /**
@@ -40,6 +40,10 @@ class ProductController extends Controller
      *
      * @Route("/new", name="product_new")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
@@ -69,6 +73,10 @@ class ProductController extends Controller
      *
      * @Route("/{id}", name="product_show")
      * @Method("GET")
+     *
+     * @param Product $product
+     *
+     * @return JsonResponse
      */
     public function showAction(Product $product)
     {
@@ -80,6 +88,11 @@ class ProductController extends Controller
      *
      * @Route("/{id}/edit", name="product_edit")
      * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Product $product
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Product $product)
     {

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * Product
@@ -18,6 +19,8 @@ class Product
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"default", "minimal"})
      */
     private $id;
 
@@ -25,6 +28,8 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Serializer\Groups({"default", "minimal"})
      */
     private $name;
 
@@ -32,6 +37,8 @@ class Product
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     *
+     * @Serializer\Groups({"default", "minimal"})
      */
     private $description;
 
@@ -39,6 +46,8 @@ class Product
      * @var float
      *
      * @ORM\Column(name="price", type="float")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $price;
 
@@ -46,6 +55,8 @@ class Product
      * @var float|null
      *
      * @ORM\Column(name="promo_price", type="float", nullable=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $promoPrice;
 
@@ -53,6 +64,8 @@ class Product
      * @var \DateTime|null
      *
      * @ORM\Column(name="promo_from", type="datetime", nullable=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $promoFrom;
 
@@ -60,6 +73,8 @@ class Product
      * @var \DateTime|null
      *
      * @ORM\Column(name="promo_to", type="datetime", nullable=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $promoTo;
 
@@ -67,6 +82,8 @@ class Product
      * @var bool
      *
      * @ORM\Column(name="active", type="boolean")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $active;
 
@@ -74,6 +91,8 @@ class Product
      * @var int
      *
      * @ORM\Column(name="quantity", type="integer")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $quantity;
 
@@ -81,6 +100,8 @@ class Product
      * @var \DateTime
      *
      * @ORM\Column(name="creation_date", type="datetime")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $creationDate;
 
@@ -88,6 +109,8 @@ class Product
      * @var ProductImage[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductImage", mappedBy="product")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $images;
 
@@ -102,33 +125,27 @@ class Product
     }
 
     /**
-     * Get id.
-     *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * Get name.
-     *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Set name.
-     *
      * @param string $name
      *
      * @return Product
      */
-    public function setName($name)
+    public function setName(string $name): Product
     {
         $this->name = $name;
 
@@ -136,23 +153,19 @@ class Product
     }
 
     /**
-     * Get description.
-     *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
     /**
-     * Set description.
-     *
      * @param string $description
      *
      * @return Product
      */
-    public function setDescription($description)
+    public function setDescription(string $description): Product
     {
         $this->description = $description;
 
@@ -160,23 +173,19 @@ class Product
     }
 
     /**
-     * Get price.
-     *
      * @return float
      */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
 
     /**
-     * Set price.
-     *
      * @param float $price
      *
      * @return Product
      */
-    public function setPrice($price)
+    public function setPrice(float $price): Product
     {
         $this->price = $price;
 
@@ -184,47 +193,19 @@ class Product
     }
 
     /**
-     * Get promoPrice.
-     *
-     * @return float|null
-     */
-    public function getPromoPrice()
-    {
-        return $this->promoPrice;
-    }
-
-    /**
-     * Set promoPrice.
-     *
-     * @param float|null $promoPrice
-     *
-     * @return Product
-     */
-    public function setPromoPrice($promoPrice = null)
-    {
-        $this->promoPrice = $promoPrice;
-
-        return $this;
-    }
-
-    /**
-     * Get promoFrom.
-     *
      * @return \DateTime|null
      */
-    public function getPromoFrom()
+    public function getPromoFrom(): ?\DateTime
     {
         return $this->promoFrom;
     }
 
     /**
-     * Set promoFrom.
-     *
      * @param \DateTime|null $promoFrom
      *
      * @return Product
      */
-    public function setPromoFrom($promoFrom = null)
+    public function setPromoFrom(?\DateTime $promoFrom): Product
     {
         $this->promoFrom = $promoFrom;
 
@@ -232,47 +213,19 @@ class Product
     }
 
     /**
-     * Get promoTo.
-     *
-     * @return \DateTime|null
-     */
-    public function getPromoTo()
-    {
-        return $this->promoTo;
-    }
-
-    /**
-     * Set promoTo.
-     *
-     * @param \DateTime|null $promoTo
-     *
-     * @return Product
-     */
-    public function setPromoTo($promoTo = null)
-    {
-        $this->promoTo = $promoTo;
-
-        return $this;
-    }
-
-    /**
-     * Get active.
-     *
      * @return bool
      */
-    public function getActive()
+    public function isActive(): bool
     {
         return $this->active;
     }
 
     /**
-     * Set active.
-     *
      * @param bool $active
      *
      * @return Product
      */
-    public function setActive($active)
+    public function setActive(bool $active): Product
     {
         $this->active = $active;
 
@@ -280,23 +233,19 @@ class Product
     }
 
     /**
-     * Get quantity.
-     *
      * @return int
      */
-    public function getQuantity()
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
 
     /**
-     * Set quantity.
-     *
      * @param int $quantity
      *
      * @return Product
      */
-    public function setQuantity($quantity)
+    public function setQuantity(int $quantity): Product
     {
         $this->quantity = $quantity;
 
@@ -304,23 +253,19 @@ class Product
     }
 
     /**
-     * Get creationDate.
-     *
      * @return \DateTime
      */
-    public function getCreationDate()
+    public function getCreationDate(): \DateTime
     {
         return $this->creationDate;
     }
 
     /**
-     * Set creationDate.
-     *
      * @param \DateTime $creationDate
      *
      * @return Product
      */
-    public function setCreationDate($creationDate)
+    public function setCreationDate(\DateTime $creationDate): Product
     {
         $this->creationDate = $creationDate;
 
@@ -343,6 +288,63 @@ class Product
     public function setImages(array $images): Product
     {
         $this->images = $images;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     *
+     * @Serializer\Groups({"minimal"})
+     */
+    public function getFinalPrice(): float
+    {
+        $now = new \DateTime();
+        if ($this->getPromoPrice() != null) {
+            if ($this->getPromoTo() >= $now) {
+                return $this->getPromoPrice();
+            }
+        }
+
+        return $this->getPrice();
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getPromoPrice(): ?float
+    {
+        return $this->promoPrice;
+    }
+
+    /**
+     * @param float|null $promoPrice
+     *
+     * @return Product
+     */
+    public function setPromoPrice(?float $promoPrice): Product
+    {
+        $this->promoPrice = $promoPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getPromoTo(): ?\DateTime
+    {
+        return $this->promoTo;
+    }
+
+    /**
+     * @param \DateTime|null $promoTo
+     *
+     * @return Product
+     */
+    public function setPromoTo(?\DateTime $promoTo): Product
+    {
+        $this->promoTo = $promoTo;
 
         return $this;
     }
