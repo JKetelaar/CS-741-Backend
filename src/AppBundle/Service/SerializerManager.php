@@ -32,7 +32,7 @@ class SerializerManager
     public static function normalize($object, $format = 'json', $groups = ['default'])
     {
         try {
-            return SerializerManager::getSerializers()->normalize($object, $format);
+            return SerializerManager::getSerializers()->normalize($object, $format, [ 'groups' => $groups ]);
         } catch (AnnotationException $e) {
             return [];
         }
