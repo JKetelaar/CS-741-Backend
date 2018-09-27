@@ -6,6 +6,8 @@ use AppBundle\Entity\Product;
 use AppBundle\Service\SerializerManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -21,13 +23,20 @@ class CartController extends Controller
      *
      * @Route("/")
      */
-    public function viewAction()
+    public function viewAction(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $cartRepository = $entityManager->getRepository('AppBundle:Cart');
 
-        // Fake data
-        $cart = $cartRepository->findOneBy(['guestId' => 1]);
+        $cart = null;
+        if ($request->get('guestid') !== null) {
+            $cart = $cartRepository->findOneBy(['guestId' => 1]);
+        } elseif ($this->getUser() !== null) {
+            // Get current logged in user
+            $cart = $cartRepository->findOneBy(['user' => $this->getUser()]);
+        } else {
+            return new JsonResponse(['error' => 'No guest ID given or user found.'], Response::HTTP_BAD_REQUEST);
+        }
 
         return new JsonResponse(SerializerManager::normalize($cart));
     }
