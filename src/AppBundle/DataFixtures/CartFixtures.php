@@ -11,6 +11,7 @@ use AppBundle\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
 
 /**
  * Class CartFixtures
@@ -25,6 +26,8 @@ class CartFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $faker = Factory::create();
+
         $productsRepository = $manager->getRepository('AppBundle:Product');
 
         $cart = new Cart();
@@ -39,6 +42,7 @@ class CartFixtures extends Fixture implements DependentFixtureInterface
             $orderItem->setName($product->getName());
             $orderItem->setPrice($product->getPrice());
             $orderItem->setProduct($product);
+            $orderItem->setQuantity($faker->numberBetween(1, 10));
 
             $manager->persist($orderItem);
 

@@ -46,6 +46,15 @@ class OrderItem
     private $price;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="quantity", type="integer")
+     *
+     * @Serializer\Groups({"default"})
+     */
+    private $quantity;
+
+    /**
      * @var Product
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Product")
@@ -119,6 +128,26 @@ class OrderItem
     public function setProduct(Product $product): OrderItem
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     *
+     * @return OrderItem
+     */
+    public function setQuantity(int $quantity): OrderItem
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

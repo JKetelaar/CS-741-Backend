@@ -5,6 +5,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
@@ -82,6 +83,32 @@ class Cart
     public function setProducts(array $products): Cart
     {
         $this->products = $products;
+
+        return $this;
+    }
+
+    /**
+     * @param Product $product
+     * @return OrderItem|null
+     */
+    public function getOrderItem(Product $product)
+    {
+        foreach ($this->products as $orderItem) {
+            if ($product->getId() === $orderItem->getId()) {
+                return $orderItem;
+            }
+        }
+
+        return null;
+    }
+
+    public function addProduct(OrderItem $orderItem): Cart
+    {
+        if ($this->products instanceof ArrayCollection) {
+            $this->products->add($orderItem);
+        } else {
+            $this->products[] = $orderItem;
+        }
 
         return $this;
     }
