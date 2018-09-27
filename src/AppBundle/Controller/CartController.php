@@ -25,16 +25,9 @@ class CartController extends Controller
      */
     public function viewAction(Request $request)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $cartRepository = $entityManager->getRepository('AppBundle:Cart');
-
-        $cart = null;
-        if ($request->get('guestid') !== null) {
-            $cart = $cartRepository->findOneBy(['guestId' => 1]);
-        } elseif ($this->getUser() !== null) {
-            // Get current logged in user
-            $cart = $cartRepository->findOneBy(['user' => $this->getUser()]);
-        } else {
+        $cart = $this->get('cart.finder')->findCartForUserOrGuest($request, $this->getUser());
+        
+        if ($cart === null) {
             return new JsonResponse(['error' => 'No guest ID given or user found.'], Response::HTTP_BAD_REQUEST);
         }
 

@@ -20,3 +20,7 @@ services:
         class: AppBundle\Service\Normalizers\DateTimeNormalizer
         tags:
         - { name: serializer.normalizer }
+
+    cart.finder:
+        class: AppBundle\Service\CartFinder
+        arguments: ['@Doctrine\ORM\EntityManagerInterface']
