@@ -353,6 +353,8 @@ class Product
      * Returns a single image if any can be found, otherwise it will return null
      *
      * @return ProductImage|null
+     *
+     * @Serializer\Groups({"minimal"})
      */
     public function getSingleImage(): ?ProductImage
     {
