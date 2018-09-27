@@ -6,6 +6,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * Cart
@@ -21,6 +22,8 @@ class Cart
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $id;
 
@@ -32,6 +35,8 @@ class Cart
      *      joinColumns={@ORM\JoinColumn(name="cart_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="orderitem_id", referencedColumnName="id")}
      * )
+     *
+     * @Serializer\Groups({"default"})
      */
     private $products;
 
@@ -39,6 +44,8 @@ class Cart
      * @var \stdClass
      *
      * @ORM\Column(name="user", type="object", nullable=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $user;
 
@@ -46,6 +53,8 @@ class Cart
      * @var string
      *
      * @ORM\Column(name="guest_id", type="string", length=255, nullable=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $guestId;
 
@@ -60,7 +69,7 @@ class Cart
     /**
      * @return OrderItem[]
      */
-    public function getProducts(): array
+    public function getProducts()
     {
         return $this->products;
     }
@@ -80,7 +89,7 @@ class Cart
     /**
      * @return \stdClass
      */
-    public function getUser(): \stdClass
+    public function getUser()
     {
         return $this->user;
     }
