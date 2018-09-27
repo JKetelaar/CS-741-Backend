@@ -173,26 +173,6 @@ class Product
     }
 
     /**
-     * @return float
-     */
-    public function getPrice(): float
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param float $price
-     *
-     * @return Product
-     */
-    public function setPrice(float $price): Product
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    /**
      * @return \DateTime|null
      */
     public function getPromoFrom(): ?\DateTime
@@ -347,5 +327,39 @@ class Product
         $this->promoTo = $promoTo;
 
         return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param float $price
+     *
+     * @return Product
+     */
+    public function setPrice(float $price): Product
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Returns a single image if any can be found, otherwise it will return null
+     *
+     * @return ProductImage|null
+     */
+    public function getSingleImage(): ?ProductImage
+    {
+        if (count($this->images) > 0) {
+            return $this->images[0];
+        }
+
+        return null;
     }
 }
