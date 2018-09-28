@@ -20,3 +20,17 @@ services:
         class: AppBundle\Service\Normalizers\DateTimeNormalizer
         tags:
         - { name: serializer.normalizer }
+
+    cart_helper:
+        class: AppBundle\Service\CartHelper
+        arguments: ['@Doctrine\ORM\EntityManagerInterface']
+
+    guest_id_listener:
+        class: AppBundle\Listener\GuestIDListener
+        arguments: ['@cart_helper']
+        tags:
+            - {
+                name: kernel.event_listener,
+                event: kernel.response,
+                method: onKernelResponse
+              }

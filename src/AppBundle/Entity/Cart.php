@@ -5,7 +5,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * Cart
@@ -21,6 +23,8 @@ class Cart
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $id;
 
@@ -32,6 +36,8 @@ class Cart
      *      joinColumns={@ORM\JoinColumn(name="cart_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="orderitem_id", referencedColumnName="id")}
      * )
+     *
+     * @Serializer\Groups({"default"})
      */
     private $products;
 
@@ -39,6 +45,8 @@ class Cart
      * @var \stdClass
      *
      * @ORM\Column(name="user", type="object", nullable=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $user;
 
@@ -46,6 +54,8 @@ class Cart
      * @var string
      *
      * @ORM\Column(name="guest_id", type="string", length=255, nullable=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $guestId;
 
@@ -60,7 +70,7 @@ class Cart
     /**
      * @return OrderItem[]
      */
-    public function getProducts(): array
+    public function getProducts()
     {
         return $this->products;
     }
@@ -78,9 +88,35 @@ class Cart
     }
 
     /**
+     * @param Product $product
+     * @return OrderItem|null
+     */
+    public function getOrderItem(Product $product)
+    {
+        foreach ($this->products as $orderItem) {
+            if ($product->getId() === $orderItem->getId()) {
+                return $orderItem;
+            }
+        }
+
+        return null;
+    }
+
+    public function addProduct(OrderItem $orderItem): Cart
+    {
+        if ($this->products instanceof ArrayCollection) {
+            $this->products->add($orderItem);
+        } else {
+            $this->products[] = $orderItem;
+        }
+
+        return $this;
+    }
+
+    /**
      * @return \stdClass
      */
-    public function getUser(): \stdClass
+    public function getUser()
     {
         return $this->user;
     }

@@ -6,6 +6,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * OrderItem
@@ -21,6 +22,8 @@ class OrderItem
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $id;
 
@@ -28,6 +31,8 @@ class OrderItem
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $name;
 
@@ -35,14 +40,27 @@ class OrderItem
      * @var float
      *
      * @ORM\Column(name="price", type="float")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $price;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="quantity", type="integer")
+     *
+     * @Serializer\Groups({"default"})
+     */
+    private $quantity;
 
     /**
      * @var Product
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Product")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $product;
 
@@ -110,6 +128,26 @@ class OrderItem
     public function setProduct(Product $product): OrderItem
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     *
+     * @return OrderItem
+     */
+    public function setQuantity(int $quantity): OrderItem
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
