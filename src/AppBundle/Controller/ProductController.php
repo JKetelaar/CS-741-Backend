@@ -32,7 +32,7 @@ class ProductController extends Controller
 
         $products = $entityManager->getRepository('AppBundle:Product')->findAll();
 
-        return new JsonResponse(SerializerManager::normalize($products, 'json', ['minimal']));
+        return new JsonResponse(SerializerManager::normalize($products, ['minimal']));
     }
 
     /**
