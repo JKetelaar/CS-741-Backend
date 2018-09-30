@@ -24,15 +24,14 @@ class SerializerManager
 
     /**
      * @param mixed $object
-     * @param string $format
      * @param array $groups
      *
      * @return array|object
      */
-    public static function normalize($object, $format = 'json', $groups = ['default'])
+    public static function normalize($object, $groups = ['default'])
     {
         try {
-            return SerializerManager::getSerializers()->normalize($object, $format, [ 'groups' => $groups ]);
+            return SerializerManager::getSerializers()->normalize($object, 'json', ['groups' => $groups]);
         } catch (AnnotationException $e) {
             return [];
         }
