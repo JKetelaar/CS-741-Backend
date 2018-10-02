@@ -284,6 +284,8 @@ class Product
 
     /**
      * @return bool
+     *
+     * @Serializer\Groups({"default"})
      */
     private function hasPromo(): bool
     {
