@@ -47,7 +47,7 @@ class Product
      *
      * @ORM\Column(name="price", type="float")
      *
-     * @Serializer\Groups({"default"})
+     * @Serializer\Groups({"default", "minimal"})
      */
     private $price;
 
@@ -357,16 +357,6 @@ class Product
         $this->price = $price;
 
         return $this;
-    }
-
-    /**
-     * @return float|null
-     *
-     * @Serializer\Groups({"minimal"})
-     */
-    public function getPossiblePromoPrice(): ?float
-    {
-        return $this->hasPromo() ? $this->getPromoPrice() : null;
     }
 
     /**
