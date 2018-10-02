@@ -279,14 +279,22 @@ class Product
      */
     public function getFinalPrice(): float
     {
+        return $this->hasPromo() ? $this->getPromoPrice() : $this->getPrice();
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasPromo(): bool
+    {
         $now = new \DateTime();
         if ($this->getPromoPrice() != null) {
             if ($this->getPromoTo() >= $now) {
-                return $this->getPromoPrice();
+                return true;
             }
         }
 
-        return $this->getPrice();
+        return false;
     }
 
     /**
@@ -347,6 +355,16 @@ class Product
         $this->price = $price;
 
         return $this;
+    }
+
+    /**
+     * @return float|null
+     *
+     * @Serializer\Groups({"minimal"})
+     */
+    public function getPossiblePromoPrice(): ?float
+    {
+        return $this->hasPromo() ? $this->getPromoPrice() : null;
     }
 
     /**
