@@ -47,7 +47,7 @@ class Product
      *
      * @ORM\Column(name="price", type="float")
      *
-     * @Serializer\Groups({"default"})
+     * @Serializer\Groups({"default", "minimal"})
      */
     private $price;
 
@@ -279,14 +279,24 @@ class Product
      */
     public function getFinalPrice(): float
     {
+        return $this->hasPromo() ? $this->getPromoPrice() : $this->getPrice();
+    }
+
+    /**
+     * @return bool
+     *
+     * @Serializer\Groups({"default"})
+     */
+    private function hasPromo(): bool
+    {
         $now = new \DateTime();
         if ($this->getPromoPrice() != null) {
             if ($this->getPromoTo() >= $now) {
-                return $this->getPromoPrice();
+                return true;
             }
         }
 
-        return $this->getPrice();
+        return false;
     }
 
     /**
