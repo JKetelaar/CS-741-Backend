@@ -49,9 +49,11 @@ class SerializerManager
 
         $objectNormalizer = new ObjectNormalizer($classMetadataFactory);
         $objectNormalizer->setCircularReferenceLimit(1);
-        $objectNormalizer->setCircularReferenceHandler(function ($object) {
-            return $object->getId();
-        });
+        $objectNormalizer->setCircularReferenceHandler(
+            function ($object) {
+                return $object->getId();
+            }
+        );
 
         $normalizers = [new DateTimeNormalizer(), $objectNormalizer];
 
