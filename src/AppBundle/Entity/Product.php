@@ -287,7 +287,7 @@ class Product
      *
      * @Serializer\Groups({"default"})
      */
-    private function hasPromo(): bool
+    public function hasPromo(): bool
     {
         $now = new \DateTime();
         if ($this->getPromoPrice() != null) {
