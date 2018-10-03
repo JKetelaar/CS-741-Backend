@@ -27,7 +27,7 @@ class CartController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Returns the cart of the current user",
-     *     @Model(type=AppBundle\Entity\Cart::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Cart::class))
      * )
      * @SWG\Tag(name="cart")
      */
@@ -51,7 +51,7 @@ class CartController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Adds an item to the cart of the current user, or appends 1 to the quantity of an item to the cart of the current user",
-     *     @Model(type=AppBundle\Entity\Cart::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Cart::class))
      * )
      *
      * @SWG\Parameter(

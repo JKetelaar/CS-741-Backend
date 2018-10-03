@@ -31,16 +31,51 @@ class ProductController extends Controller
      *     description="Returns all available products",
      *     @SWG\Schema(
      *         type="array",
-     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Product::class))
      *     )
      * )
+     *
+     * @SWG\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     type="integer",
+     *     description="The maximum amount of products to be shown"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="orderBy",
+     *     in="query",
+     *     type="string",
+     *     description="The property in the Product class to order on"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="orderType",
+     *     in="query",
+     *     type="string",
+     *     description="The way of ordering; either 'DESC' or 'ASC'"
+     * )
+     *
      * @SWG\Tag(name="products")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
+        $order = [];
 
-        $products = $entityManager->getRepository('AppBundle:Product')->findAll();
+        if (($orderBy = $request->get('orderby')) !== null) {
+            $order = [
+                $request->get('orderby') => ($orderType = $request->get(
+                    'ordertype'
+                )) !== null && $orderType ? $orderType : 'DESC',
+            ];
+        }
+
+        $products = $entityManager->getRepository('AppBundle:Product')->findBy(
+            [],
+            $order,
+            ($limit = $request->get('limit')) !== null && $limit ? intval($limit) : null
+        );
 
         return new JsonResponse(SerializerManager::normalize($products, ['minimal']));
     }
@@ -57,7 +92,7 @@ class ProductController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Adds a new product",
-     *     @Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Product::class))
      * )
      * @SWG\Tag(name="products")
      */
@@ -96,7 +131,7 @@ class ProductController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Returns a specific product based on the given ID",
-     *     @Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Product::class))
      * )
      * @SWG\Tag(name="products")
      */
@@ -118,7 +153,7 @@ class ProductController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Edits a specific product based on the given ID",
-     *     @Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Product::class))
      * )
      * @SWG\Tag(name="products")
      */
@@ -172,7 +207,7 @@ class ProductController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Deletes a specific product based on the given ID",
-     *     @Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Product::class))
      * )
      * @SWG\Tag(name="products")
      */
