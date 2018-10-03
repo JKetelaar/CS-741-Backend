@@ -9,7 +9,7 @@ services:
 
     AppBundle\:
         resource: '../../src/AppBundle/*'
-        exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
+        exclude: '../../src/AppBundle/{Entity,Repository,Tests,Service,Listener}'
 
     AppBundle\Controller\:
         resource: '../../src/AppBundle/Controller'
@@ -24,6 +24,10 @@ services:
     cart_helper:
         class: AppBundle\Service\CartHelper
         arguments: ['@Doctrine\ORM\EntityManagerInterface']
+
+    file_uploader:
+        class: AppBundle\Service\FileUploader
+        arguments: ['%upload_directory%']
 
     guest_id_listener:
         class: AppBundle\Listener\GuestIDListener
