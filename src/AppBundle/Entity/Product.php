@@ -122,6 +122,16 @@ class Product
     private $orderItems;
 
     /**
+     * @var Category
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     *
+     * @Serializer\Groups({"default"})
+     */
+    private $category;
+
+    /**
      * Product constructor.
      */
     public function __construct()
@@ -380,5 +390,25 @@ class Product
         }
 
         return null;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getCategory(): Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return Product
+     */
+    public function setCategory(Category $category): Product
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }

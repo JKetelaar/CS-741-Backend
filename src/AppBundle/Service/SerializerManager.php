@@ -46,7 +46,16 @@ class SerializerManager
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
 
         $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new DateTimeNormalizer(), new ObjectNormalizer($classMetadataFactory)];
+
+        $objectNormalizer = new ObjectNormalizer($classMetadataFactory);
+        $objectNormalizer->setCircularReferenceLimit(1);
+        $objectNormalizer->setCircularReferenceHandler(
+            function ($object) {
+                return $object->getId();
+            }
+        );
+
+        $normalizers = [new DateTimeNormalizer(), $objectNormalizer];
 
         $serializer = new Serializer($normalizers, $encoders);
 
