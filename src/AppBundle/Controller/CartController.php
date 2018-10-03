@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Service\SerializerManager;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +22,14 @@ class CartController extends Controller
     /**
      * @return JsonResponse
      *
-     * @Route("/")
+     * @Route("/", methods={"GET"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the cart of the current user",
+     *     @Model(type=AppBundle\Entity\Cart::class, groups={"default"}))
+     * )
+     * @SWG\Tag(name="cart")
      */
     public function viewAction(Request $request)
     {
@@ -38,6 +47,21 @@ class CartController extends Controller
      * @return JsonResponse
      *
      * @Route("/add", methods={"POST"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Adds an item to the cart of the current user, or appends 1 to the quantity of an item to the cart of the current user",
+     *     @Model(type=AppBundle\Entity\Cart::class, groups={"default"}))
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="product",
+     *     in="query",
+     *     type="string",
+     *     description="The product ID to be added or apended to the cart"
+     * )
+     *
+     * @SWG\Tag(name="cart")
      */
     public function addAction(Request $request)
     {
@@ -53,6 +77,11 @@ class CartController extends Controller
         }
 
         $cart = $this->get('cart_helper')->findCartForUserOrGuest($request, $this->getUser());
+
+        if ($cart === null) {
+            $cart = $this->get('cart_helper')->generateCart($request, $this->getUser());
+        }
+
         $this->get('cart_helper')->addProductToCart($cart, $product);
 
         return new JsonResponse(SerializerManager::normalize($cart));
