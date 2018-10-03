@@ -31,7 +31,7 @@ class ProductController extends Controller
      *     description="Returns all available products",
      *     @SWG\Schema(
      *         type="array",
-     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Product::class))
      *     )
      * )
      *
@@ -92,7 +92,7 @@ class ProductController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Adds a new product",
-     *     @Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Product::class))
      * )
      * @SWG\Tag(name="products")
      */
@@ -131,7 +131,7 @@ class ProductController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Returns a specific product based on the given ID",
-     *     @Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Product::class))
      * )
      * @SWG\Tag(name="products")
      */
@@ -153,7 +153,7 @@ class ProductController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Edits a specific product based on the given ID",
-     *     @Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Product::class))
      * )
      * @SWG\Tag(name="products")
      */
@@ -207,7 +207,7 @@ class ProductController extends Controller
      * @SWG\Response(
      *     response=200,
      *     description="Deletes a specific product based on the given ID",
-     *     @Model(type=AppBundle\Entity\Product::class, groups={"default"}))
+     *     @Model(type=AppBundle\Entity\Product::class))
      * )
      * @SWG\Tag(name="products")
      */
