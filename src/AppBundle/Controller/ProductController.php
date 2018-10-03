@@ -34,13 +34,21 @@ class ProductController extends Controller
      *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Product::class, groups={"default"}))
      *     )
      * )
+     *
+     * @SWG\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     type="integer",
+     *     description="The maximum amount of products to be shown"
+     * )
+     *
      * @SWG\Tag(name="products")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
 
-        $products = $entityManager->getRepository('AppBundle:Product')->findAll();
+        $products = $entityManager->getRepository('AppBundle:Product')->findBy([], [], ($limit = $request->get('limit')) !== null ? $limit : null);
 
         return new JsonResponse(SerializerManager::normalize($products, ['minimal']));
     }
