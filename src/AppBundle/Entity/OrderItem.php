@@ -57,12 +57,20 @@ class OrderItem
     /**
      * @var Product
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Product", inversedBy="orderItems")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      *
      * @Serializer\Groups({"default"})
      */
     private $product;
+
+    /**
+     * @var Cart
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Cart", inversedBy="products")
+     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
+     */
+    private $cart;
 
     /**
      * @return int
@@ -148,6 +156,26 @@ class OrderItem
     public function setQuantity(int $quantity): OrderItem
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * @return Cart
+     */
+    public function getCart(): Cart
+    {
+        return $this->cart;
+    }
+
+    /**
+     * @param Cart $cart
+     *
+     * @return OrderItem
+     */
+    public function setCart(Cart $cart): OrderItem
+    {
+        $this->cart = $cart;
 
         return $this;
     }

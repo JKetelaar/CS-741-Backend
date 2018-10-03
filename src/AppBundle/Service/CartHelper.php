@@ -35,6 +35,7 @@ class CartHelper
     /**
      * @param Request $request
      * @param User|null $user
+     *
      * @return Cart|null
      */
     public function findCartForUserOrGuest(Request $request, ?User $user): ?Cart
@@ -47,6 +48,27 @@ class CartHelper
         } else {
             $cart = $cartRepository->findOneBy(['guestId' => $request->cookies->get('guestid')]);
         }
+
+        return $cart;
+    }
+
+    /**
+     * @param Request $request
+     * @param User|null $user
+     *
+     * @return Cart
+     */
+    public function generateCart(Request $request, ?User $user)
+    {
+        $cart = new Cart();
+        if ($user !== null && $user instanceof User) {
+            $cart->setUser($user);
+        } else {
+            $cart->setGuestId($request->cookies->get('guestid'));
+        }
+
+        $this->entityManager->persist($cart);
+        $this->entityManager->flush();
 
         return $cart;
     }
@@ -77,6 +99,7 @@ class CartHelper
         $orderItem->setProduct($product);
         $orderItem->setPrice($product->getPrice());
         $orderItem->setName($product->getName());
+        $orderItem->setQuantity(1);
 
         return $orderItem;
     }
@@ -96,8 +119,10 @@ class CartHelper
 
             $this->entityManager->persist($cart);
         }
+        $orderItem->setCart($cart);
 
         $this->entityManager->persist($orderItem);
+        $this->entityManager->flush();
 
         return $cart;
     }

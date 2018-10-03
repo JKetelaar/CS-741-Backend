@@ -115,6 +115,13 @@ class Product
     private $images;
 
     /**
+     * @var OrderItem[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="product")
+     */
+    private $orderItems;
+
+    /**
      * @var Category
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products")
