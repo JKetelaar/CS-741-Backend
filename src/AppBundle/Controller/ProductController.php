@@ -42,6 +42,20 @@ class ProductController extends Controller
      *     description="The maximum amount of products to be shown"
      * )
      *
+     * @SWG\Parameter(
+     *     name="orderBy",
+     *     in="query",
+     *     type="string",
+     *     description="The property in the Product class to order on"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="orderType",
+     *     in="query",
+     *     type="string",
+     *     description="The way of ordering; either 'DESC' or 'ASC'"
+     * )
+     *
      * @SWG\Tag(name="products")
      */
     public function indexAction(Request $request)
