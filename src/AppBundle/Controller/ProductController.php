@@ -63,6 +63,13 @@ class ProductController extends Controller
      *     description="Search query to search in the name and description of the products"
      * )
      *
+     * @SWG\Parameter(
+     *     name="category",
+     *     in="query",
+     *     type="integer",
+     *     description="Category ID to filter the products on"
+     * )
+     *
      * @SWG\Tag(name="products")
      */
     public function indexAction(Request $request)
