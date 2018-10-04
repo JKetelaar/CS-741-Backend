@@ -56,6 +56,13 @@ class ProductController extends Controller
      *     description="The way of ordering; either 'DESC' or 'ASC'"
      * )
      *
+     * @SWG\Parameter(
+     *     name="search",
+     *     in="query",
+     *     type="string",
+     *     description="Search query to search in the name and description of the products"
+     * )
+     *
      * @SWG\Tag(name="products")
      */
     public function indexAction(Request $request)
@@ -71,10 +78,11 @@ class ProductController extends Controller
             ];
         }
 
-        $products = $entityManager->getRepository('AppBundle:Product')->findBy(
-            [],
-            $order,
-            ($limit = $request->get('limit')) !== null && $limit ? intval($limit) : null
+        $products = $entityManager->getRepository('AppBundle:Product')->getProducts(
+            $request->get('orderby'),
+            $request->get('ordertype'),
+            $request->get('limit'),
+            $request->get('search')
         );
 
         return new JsonResponse(SerializerManager::normalize($products, ['minimal']));
