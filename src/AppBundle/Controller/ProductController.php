@@ -68,21 +68,13 @@ class ProductController extends Controller
     public function indexAction(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $order = [];
-
-        if (($orderBy = $request->get('orderby')) !== null) {
-            $order = [
-                $request->get('orderby') => ($orderType = $request->get(
-                    'ordertype'
-                )) !== null && $orderType ? $orderType : 'DESC',
-            ];
-        }
 
         $products = $entityManager->getRepository('AppBundle:Product')->getProducts(
             $request->get('orderby'),
             $request->get('ordertype'),
             $request->get('limit'),
-            $request->get('search')
+            $request->get('search'),
+            $request->get('category')
         );
 
         return new JsonResponse(SerializerManager::normalize($products, ['minimal']));
