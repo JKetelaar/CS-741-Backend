@@ -14,6 +14,7 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
      * @param string|null $orderType
      * @param string|null $limit
      * @param string|null $search
+     * @param int|null $category
      *
      * @return Product[]
      */
@@ -21,14 +22,19 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
         ?string $orderBy = null,
         ?string $orderType = null,
         ?string $limit = null,
-        ?string $search = null
+        ?string $search = null,
+        ?int $category = null
     ): array {
         $query = $this->createQueryBuilder('product')
             ->from('AppBundle:Product', 'p');
 
+        if ($category !== null) {
+            $query->andWhere('product.category = :category');
+            $query->setParameter('category', $category);
+        }
+
         if ($search !== null) {
-            $query->where('product.name LIKE :search')
-                ->orWhere('product.description LIKE :search')
+            $query->andWhere('(product.name LIKE :search OR product.description LIKE :search)')
                 ->setParameter('search', '%'.$search.'%');
         }
 
