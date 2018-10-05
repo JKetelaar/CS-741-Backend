@@ -3,40 +3,52 @@
 namespace AppBundle\Controller\User;
 
 use AppBundle\Entity\User;
-use FOS\UserBundle\Controller\RegistrationController as BaseController;
-use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\Event\GetResponseUserEvent;
-use FOS\UserBundle\FOSUserEvents;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class RegistrationController
  * @package AppBundle\Controller\User
+ *
+ * @Route("users")
  */
-class RegistrationController extends BaseController
+class RegistrationController extends Controller
 {
     /**
-     * RegistrationController constructor.
-     * @param ContainerInterface $serviceContainer
-     */
-    public function __construct(ContainerInterface $serviceContainer)
-    {
-        $this->setContainer($serviceContainer);
-        $eventDispatcher = $this->container->get('event_dispatcher');
-        $formFactory = $this->container->get('fos_user.registration.form.factory');
-        $userManager = $this->container->get('fos_user.user_manager');
-        $tokenStorage = $this->container->get('security.token_storage');
-
-        parent::__construct($eventDispatcher, $formFactory, $userManager, $tokenStorage);
-    }
-
-    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
      * @Route("/login", name="user_login", methods={"POST"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Logs a user in, if the given information is correct"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="username",
+     *     in="query",
+     *     type="string",
+     *     description="The username in the system, this should be the email address"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="password",
+     *     in="query",
+     *     type="string",
+     *     description="The password of the user to login with"
+     * )
+     *
+     * @SWG\Tag(name="users")
      */
     public function loginAction(Request $request)
     {
@@ -61,62 +73,108 @@ class RegistrationController extends BaseController
         $token = new UsernamePasswordToken($user->getUsername(), null, 'common', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
 
-        return new JsonResponse([], Response::HTTP_OK);
+        return new JsonResponse(['User logged in'], Response::HTTP_OK);
     }
 
     /**
-     * Returns token for user.
+     * TODO: Cleanup register
      *
-     * @param User $user
-     *
-     * @return array
-     */
-    public function getToken(User $user)
-    {
-        return $this->container->get('lexik_jwt_authentication.encoder')
-            ->encode(
-                [
-                    'username' => $user->getUsername(),
-                    'exp' => $this->getTokenExpiryDateTime(),
-                ]
-            );
-    }
-
-    /**
-     * TODO: Finish register
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @return Response
      *
      * @Route("/register", name="user_register", methods={"POST"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Creates a new user in the system"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="email",
+     *     in="query",
+     *     type="string",
+     *     description="The email of the user to register"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="password",
+     *     in="query",
+     *     type="string",
+     *     description="The password of the user to register"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="password2",
+     *     in="query",
+     *     type="string",
+     *     description="The password verification of the user to register, to make sure the user filled in the correct password"
+     * )
+     *
+     * @SWG\Tag(name="users")
      */
-    public function registerAction(Request $request)
+    public function registerAction(Request $request, ValidatorInterface $validator)
     {
-        /** @var \FOS\UserBundle\Form\Factory\FactoryInterface */
-        $formFactory = $this->get('fos_user.registration.form.factory');
-        /** @var \FOS\UserBundle\Model\UserManagerInterface */
-        $userManager = $this->get('fos_user.user_manager');
-        /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $passwordVerification = $request->get('password2');
 
-        $user = $userManager->createUser();
-        $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
+        if ($email !== null && !empty($email)) {
+            $emailConstraint = new Email();
+            $emailConstraint->message = 'Invalid email address';
 
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
-        }
-
-        $form = $formFactory->createForm(['csrf_protection' => false]);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $event = new FormEvent($form, $request);
-            $dispatcher->dispatch(
-                FOSUserEvents::REGISTRATION_SUCCESS,
-                $event
+            $errors = $validator->validate(
+                $email,
+                $emailConstraint
             );
 
-            $userManager->updateUser($user);
+            if (0 !== count($errors)) {
+                $errorMessage = $errors[0]->getMessage();
 
-            $response = new Response($this->serialize('User created.'), Response::HTTP_CREATED);
+                return new JsonResponse(['error' => $errorMessage], Response::HTTP_BAD_REQUEST);
+            }
+        } else {
+            return new JsonResponse(['error' => 'Missing email address'], Response::HTTP_BAD_REQUEST);
         }
+
+        if ($password !== null && !empty($password)) {
+            $passwordConstraint = new Length(['min' => 8]);
+            $passwordConstraint->minMessage = 'Password should be a minimum of 8 characters long';
+
+            $errors = $validator->validate(
+                $password,
+                $passwordConstraint
+            );
+
+            if (0 !== count($errors)) {
+                $errorMessage = $errors[0]->getMessage();
+
+                return new JsonResponse(['error' => $errorMessage], Response::HTTP_BAD_REQUEST);
+            }
+        } else {
+            return new JsonResponse(['error' => 'Missing password'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($password !== $passwordVerification) {
+            return new JsonResponse(['error' => 'Passwords do not match'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $userManager = $this->get('fos_user.user_manager');
+
+        if ($userManager->findUserByEmail($email) !== null) {
+            return new JsonResponse(['error' => 'Email already exists'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = $userManager->createUser();
+        $user->setUsername($email);
+        $user->setEmail($email);
+        $user->setEmailCanonical($email);
+        $user->setEnabled(1);
+        $user->setPlainPassword($password);
+        $user->setRoles(['ROLE_USER']);
+
+        $userManager->updateUser($user);
+
+        return new JsonResponse(['User created']);
     }
 }
