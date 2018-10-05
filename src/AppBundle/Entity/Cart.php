@@ -31,11 +31,7 @@ class Cart
     /**
      * @var OrderItem[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\OrderItem")
-     * @ORM\JoinTable(name="cart_order_items",
-     *      joinColumns={@ORM\JoinColumn(name="cart_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="orderitem_id", referencedColumnName="id")}
-     * )
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="cart")
      *
      * @Serializer\Groups({"default"})
      */
@@ -93,9 +89,11 @@ class Cart
      */
     public function getOrderItem(Product $product)
     {
-        foreach ($this->products as $orderItem) {
-            if ($product->getId() === $orderItem->getId()) {
-                return $orderItem;
+        if ($this->products !== null && count($this->products) > 0) {
+            foreach ($this->products as $orderItem) {
+                if ($product->getId() === $orderItem->getId()) {
+                    return $orderItem;
+                }
             }
         }
 

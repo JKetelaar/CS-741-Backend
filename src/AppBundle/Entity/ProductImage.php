@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * ProductImage
@@ -18,13 +19,17 @@ class ProductImage
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"default", "minimal"})
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="filename", type="string", length=255, unique=true)
+     * @ORM\Column(name="filename", type="string", length=255, unique=false)
+     *
+     * @Serializer\Groups({"default", "minimal"})
      */
     private $filename;
 
@@ -32,6 +37,8 @@ class ProductImage
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $date;
 
@@ -42,6 +49,14 @@ class ProductImage
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     private $product;
+
+    /**
+     * ProductImage constructor.
+     */
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     /**
      * @return int

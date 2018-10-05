@@ -7,6 +7,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    upload_directory: '%kernel.project_dir%/web/uploads/images/'
 
 framework:
     templating:
@@ -99,3 +100,9 @@ fos_user:
     from_email:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
+
+# Nelmio API Documentation Configuration
+nelmio_api_doc:
+    areas:
+        path_patterns:
+        - ^/api(?!/doc$)
