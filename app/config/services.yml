@@ -38,3 +38,8 @@ services:
                 event: kernel.response,
                 method: onKernelResponse
               }
+
+    app.controller.register:
+        class: AppBundle\Controller\User\RegistrationController
+        arguments: ['@service_container']
+        public: true
