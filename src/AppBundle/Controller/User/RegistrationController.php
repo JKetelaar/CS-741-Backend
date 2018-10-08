@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -70,8 +71,15 @@ class RegistrationController extends Controller
             return new JsonResponse(['error' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
         }
 
-        $token = new UsernamePasswordToken($user->getUsername(), null, 'common', $user->getRoles());
+        $token = new UsernamePasswordToken($user->getUsername(), null, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
+
+        $this->get('session')->set('_security_main', serialize($token));
+
+        $event = new InteractiveLoginEvent($request, $token);
+        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+
+        $this->get('session')->save();
 
         return new JsonResponse(['User logged in'], Response::HTTP_OK);
     }
