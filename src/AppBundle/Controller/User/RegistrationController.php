@@ -2,16 +2,17 @@
 
 namespace AppBundle\Controller\User;
 
-use AppBundle\Entity\User;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -50,6 +51,7 @@ class RegistrationController extends Controller
      * )
      *
      * @SWG\Tag(name="users")
+     * @throws \ReflectionException
      */
     public function loginAction(Request $request)
     {
@@ -70,18 +72,41 @@ class RegistrationController extends Controller
         if (!$isValid) {
             return new JsonResponse(['error' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
         }
+        $response = new JsonResponse(['User logged in'], Response::HTTP_OK);
 
-        $token = new UsernamePasswordToken($user->getUsername(), null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, $password, 'main', $user->getRoles());
+
         $this->get('security.token_storage')->setToken($token);
 
         $this->get('session')->set('_security_main', serialize($token));
 
         $event = new InteractiveLoginEvent($request, $token);
-        $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
 
-        $this->get('session')->save();
+        $this->get('event_dispatcher')->dispatch(SecurityEvents::INTERACTIVE_LOGIN, $event);
 
-        return new JsonResponse(['User logged in'], Response::HTTP_OK);
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * @Route("/current", name="user_check", methods={"GET"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Gets information of the current logged in user"
+     * )
+     *
+     * @SWG\Tag(name="users")
+     */
+    public function checkAction(Request $request)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        var_dump($this->getUser());
+
+        return new JsonResponse([], Response::HTTP_OK);
     }
 
     /**
