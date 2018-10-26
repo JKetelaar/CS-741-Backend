@@ -34,14 +34,6 @@ class User extends BaseUser
     }
 
     /**
-     * @return string[]
-     */
-    public function getRoles()
-    {
-        return ['ROLE_USER'];
-    }
-
-    /**
      * @return OrderAddress[]
      */
     public function getAddresses(): array
