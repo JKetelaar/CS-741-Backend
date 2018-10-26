@@ -91,6 +91,14 @@ class OrderAddress
     private $instructions;
 
     /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="addresses")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * @return int
      */
     public function getId(): int

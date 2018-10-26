@@ -21,8 +21,43 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @var OrderAddress[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderAddress", mappedBy="user")
+     */
+    protected $addresses;
+
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    /**
+     * @return OrderAddress[]
+     */
+    public function getAddresses(): array
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * @param OrderAddress[] $addresses
+     *
+     * @return User
+     */
+    public function setAddresses(array $addresses): User
+    {
+        $this->addresses = $addresses;
+
+        return $this;
     }
 }
