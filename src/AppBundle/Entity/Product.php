@@ -411,4 +411,12 @@ class Product
 
         return $this;
     }
+
+    /**
+     * @return OrderItem[]
+     */
+    public function getOrderItems(): array
+    {
+        return $this->orderItems;
+    }
 }

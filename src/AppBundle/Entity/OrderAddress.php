@@ -18,6 +18,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderAddress
 {
+    const SHIPPING_TYPE = 'shipping';
+    const BILLING_TYPE = 'billing';
+
     /**
      * @var int
      *

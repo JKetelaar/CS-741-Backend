@@ -5,8 +5,8 @@
 
 namespace AppBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Entity
@@ -53,5 +53,33 @@ class User extends BaseUser
         $this->addresses = $addresses;
 
         return $this;
+    }
+
+    /**
+     * @return OrderAddress|null
+     */
+    public function getShippingAddress(): ?OrderAddress
+    {
+        foreach ($this->addresses as $address) {
+            if ($address->getType() === OrderAddress::SHIPPING_TYPE) {
+                return $address;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return OrderAddress|null
+     */
+    public function getBillingAddress(): ?OrderAddress
+    {
+        foreach ($this->addresses as $address) {
+            if ($address->getType() === OrderAddress::BILLING_TYPE) {
+                return $address;
+            }
+        }
+
+        return null;
     }
 }
