@@ -16,21 +16,25 @@ security:
             pattern: ^/
             provider: fos_userbundle
             form_login:
-                check_path: /api/users/login_check
-                login_path: /api/users/login
-                require_previous_session: false
+                check_path: /users/login_check
+                login_path: /users/login
+                success_handler: authentication.handler.login_success_handler
 
             logout:       true
             anonymous:    true
             remember_me:
                 secret:   '%secret%'
                 lifetime: 604800 # 1 week in seconds
-                path:     /
+                path: /
                 always_remember_me: true
 
     access_control:
-    - { path: ^/api/users/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/api/users/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/api/users/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/users/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/users/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/users/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+#    - { path: ^/api/users/current, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
     - { path: ^/admin/, role: ROLE_ADMIN }
+
     - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

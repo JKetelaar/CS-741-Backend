@@ -7,6 +7,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -36,9 +37,39 @@ class User extends BaseUser
     }
 
     /**
+     * @return mixed
+     *
+     * @Serializer\Groups({"default", "minimal"})
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     *
+     * @Serializer\Groups({"default", "minimal"})
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @return string
+     *
+     * @Serializer\Groups({"default", "minimal"})
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
      * @return OrderAddress[]
      */
-    public function getAddresses(): array
+    public function getAddresses()
     {
         return $this->addresses;
     }
@@ -57,6 +88,8 @@ class User extends BaseUser
 
     /**
      * @return OrderAddress|null
+     *
+     * @Serializer\Groups({"default", "minimal"})
      */
     public function getShippingAddress(): ?OrderAddress
     {
@@ -71,6 +104,8 @@ class User extends BaseUser
 
     /**
      * @return OrderAddress|null
+     *
+     * @Serializer\Groups({"default", "minimal"})
      */
     public function getBillingAddress(): ?OrderAddress
     {

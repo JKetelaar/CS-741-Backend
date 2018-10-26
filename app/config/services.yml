@@ -43,3 +43,7 @@ services:
         class: AppBundle\Controller\User\RegistrationController
         arguments: ['@service_container']
         public: true
+
+    authentication.handler.login_success_handler:
+        class:  AppBundle\Listener\LoginSuccessHandler
+        arguments:  ['@router', '@security.authorization_checker']

@@ -2,11 +2,10 @@
 
 namespace AppBundle\Controller\User;
 
+use AppBundle\Service\SerializerManager;
 use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -102,11 +101,12 @@ class RegistrationController extends Controller
      */
     public function checkAction(Request $request)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+//        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        var_dump($this->getUser());
+//        var_dump($this->get('security.token_storage')->getToken()->getUser()->getId());
+//        die();
 
-        return new JsonResponse([], Response::HTTP_OK);
+        return new JsonResponse(SerializerManager::normalize($this->getUser()), Response::HTTP_OK);
     }
 
     /**

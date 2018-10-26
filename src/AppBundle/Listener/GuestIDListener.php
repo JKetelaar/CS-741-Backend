@@ -37,7 +37,7 @@ class GuestIDListener
         if ($request->cookies->get('guestid') === null) {
             $guestID = $this->cartHelper->getUniqueGuestID();
 
-            $cookie = new Cookie('guestid', $guestID, new \DateTime('+30 days'));
+            $cookie = new Cookie('guestid', $guestID, new \DateTime('+30 days'), '/', null, false, false);
             $response->headers->setCookie($cookie);
         }
     }
