@@ -128,6 +128,29 @@ class CartHelper
     }
 
     /**
+     * @param Cart $cart
+     * @param Product $product
+     * @param int $quantity
+     * @return bool Return true if quantity adjusted, false if could not find the product in the cart
+     */
+    public function setQuantityForProduct(Cart $cart, Product $product, int $quantity)
+    {
+        $orderItem = $cart->getOrderItem($product);
+        if ($orderItem !== null) {
+            $orderItem->setQuantity($quantity);
+
+            $this->entityManager->persist($cart);
+
+            $this->entityManager->persist($orderItem);
+            $this->entityManager->flush();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Generates a new unique ID for the guest
      *
      * @return string

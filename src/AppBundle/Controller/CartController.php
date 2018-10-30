@@ -86,4 +86,66 @@ class CartController extends Controller
 
         return new JsonResponse(SerializerManager::normalize($cart));
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * @Route("/adjust", methods={"PUT"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Adjusts the quantity of an item in the cart of the current user",
+     *     @Model(type=AppBundle\Entity\Cart::class))
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="product",
+     *     in="query",
+     *     type="string",
+     *     description="The product ID to be added or apended to the cart"
+     * )
+     *
+     *
+     * @SWG\Parameter(
+     *     name="quantity",
+     *     in="query",
+     *     type="integer",
+     *     description="The quantity for the product in the cart"
+     * )
+     *
+     * @SWG\Tag(name="cart")
+     */
+    public function adjustAction(Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->getRepository('AppBundle:Product');
+        $productManager = $entityManager->getRepository('AppBundle:Product');
+        $product = $productManager->findOneBy(['id' => $request->get('product')]);
+        $quantity = intval($request->get('quantity'));
+
+        if ($quantity <= 0) {
+            return new JsonResponse(
+                ['error' => 'Invalid quantity given.'], Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        if ($product === null) {
+            return new JsonResponse(
+                ['error' => 'Could not find a product with requested ID.'], Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $cart = $this->get('cart_helper')->findCartForUserOrGuest($request, $this->getUser());
+
+        if ($cart === null) {
+            return new JsonResponse(
+                ['error' => 'Could not find cart for user.'], Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $this->get('cart_helper')->setQuantityForProduct($cart, $product, $quantity);
+
+        return new JsonResponse(SerializerManager::normalize($cart));
+    }
 }
