@@ -91,7 +91,7 @@ class Cart
     {
         if ($this->products !== null && count($this->products) > 0) {
             foreach ($this->products as $orderItem) {
-                if ($product->getId() === $orderItem->getId()) {
+                if ($product->getId() === $orderItem->getProduct()->getId()) {
                     return $orderItem;
                 }
             }
@@ -134,7 +134,7 @@ class Cart
     /**
      * @return string
      */
-    public function getGuestId(): string
+    public function getGuestId(): ?string
     {
         return $this->guestId;
     }

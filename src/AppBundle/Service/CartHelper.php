@@ -8,10 +8,10 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Cart;
 use AppBundle\Entity\OrderItem;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\User;
 
 /**
  * Class CartHelper
@@ -127,6 +127,7 @@ class CartHelper
 
         return $cart;
     }
+
     /**
      * @param Cart $cart
      * @param Product $product
