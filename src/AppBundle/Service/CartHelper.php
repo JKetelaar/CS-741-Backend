@@ -108,14 +108,16 @@ class CartHelper
     /**
      * @param Cart $cart
      * @param Product $product
+     * @param int $quantity
      * @return Cart
      */
-    public function addProductToCart(Cart $cart, Product $product)
+    public function addProductToCart(Cart $cart, Product $product, int $quantity = 1)
     {
         if (($orderItem = $cart->getOrderItem($product)) !== null) {
-            $orderItem->setQuantity($orderItem->getQuantity() + 1);
+            $orderItem->setQuantity($orderItem->getQuantity() + $quantity);
         } else {
             $orderItem = $this->convertToOrderItem($product);
+            $orderItem->setQuantity($quantity);
             $cart->addProduct($orderItem);
 
             $this->entityManager->persist($cart);
