@@ -61,6 +61,13 @@ class CartController extends Controller
      *     description="The product ID to be added or appended to the cart"
      * )
      *
+     * @SWG\Parameter(
+     *     name="quantity",
+     *     in="query",
+     *     type="integer",
+     *     description="The quantity to be added to the cart; defaults to 1"
+     * )
+     *
      * @SWG\Tag(name="cart")
      */
     public function addAction(Request $request)
@@ -69,6 +76,10 @@ class CartController extends Controller
         $entityManager->getRepository('AppBundle:Product');
         $productManager = $entityManager->getRepository('AppBundle:Product');
         $product = $productManager->findOneBy(['id' => $request->get('product')]);
+        $quantity = intval($request->get('quantity'));
+        if ($quantity <= 0){
+            $quantity = 1;
+        }
 
         if ($product === null) {
             return new JsonResponse(
@@ -82,7 +93,7 @@ class CartController extends Controller
             $cart = $this->get('cart_helper')->generateCart($request, $this->getUser());
         }
 
-        $this->get('cart_helper')->addProductToCart($cart, $product);
+        $this->get('cart_helper')->addProductToCart($cart, $product, $quantity);
 
         return new JsonResponse(SerializerManager::normalize($cart));
     }
