@@ -91,6 +91,53 @@ class CartController extends Controller
      * @param Request $request
      * @return JsonResponse
      *
+     * @Route("/delete", methods={"DELETE"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Deletes an item from the cart of the current user",
+     *     @Model(type=AppBundle\Entity\Cart::class))
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="product",
+     *     in="query",
+     *     type="string",
+     *     description="The product ID to be deleted from the cart"
+     * )
+     *
+     * @SWG\Tag(name="cart")
+     */
+    public function deleteAction(Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->getRepository('AppBundle:Product');
+        $productManager = $entityManager->getRepository('AppBundle:Product');
+        $product = $productManager->findOneBy(['id' => $request->get('product')]);
+
+        if ($product === null) {
+            return new JsonResponse(
+                ['error' => 'Could not find a product with requested ID.'], Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $cart = $this->get('cart_helper')->findCartForUserOrGuest($request, $this->getUser());
+
+        if ($cart === null) {
+            return new JsonResponse(
+                ['error' => 'Could not find cart for user.'], Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $this->get('cart_helper')->addProductToCart($cart, $product);
+
+        return new JsonResponse(SerializerManager::normalize($cart));
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
      * @Route("/adjust", methods={"PUT"})
      *
      * @SWG\Response(

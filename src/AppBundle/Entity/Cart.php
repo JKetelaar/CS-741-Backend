@@ -31,14 +31,14 @@ class Cart
     /**
      * @var OrderItem[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="cart")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="cart", orphanRemoval=true)
      *
      * @Serializer\Groups({"default"})
      */
     private $products;
 
     /**
-     * @var \stdClass
+     * @var User
      *
      * @ORM\Column(name="user", type="object", nullable=true)
      *
@@ -112,7 +112,7 @@ class Cart
     }
 
     /**
-     * @return \stdClass
+     * @return User
      */
     public function getUser()
     {
@@ -120,11 +120,11 @@ class Cart
     }
 
     /**
-     * @param \stdClass $user
+     * @param User $user
      *
      * @return Cart
      */
-    public function setUser(\stdClass $user): Cart
+    public function setUser(User $user): Cart
     {
         $this->user = $user;
 
