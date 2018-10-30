@@ -129,7 +129,7 @@ class CartController extends Controller
             );
         }
 
-        $this->get('cart_helper')->addProductToCart($cart, $product);
+        $this->get('cart_helper')->removeProductFromCart($cart, $product);
 
         return new JsonResponse(SerializerManager::normalize($cart));
     }
