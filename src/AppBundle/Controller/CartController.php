@@ -58,7 +58,7 @@ class CartController extends Controller
      *     name="product",
      *     in="query",
      *     type="string",
-     *     description="The product ID to be added or apended to the cart"
+     *     description="The product ID to be added or appended to the cart"
      * )
      *
      * @SWG\Tag(name="cart")
@@ -150,7 +150,7 @@ class CartController extends Controller
      *     name="product",
      *     in="query",
      *     type="string",
-     *     description="The product ID to be added or apended to the cart"
+     *     description="The product ID to be added or appended to the cart"
      * )
      *
      *
