@@ -8,9 +8,10 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Cart;
 use AppBundle\Entity\OrderItem;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\User;
 
 /**
  * Class CartHelper
@@ -125,6 +126,53 @@ class CartHelper
         $this->entityManager->flush();
 
         return $cart;
+    }
+
+    /**
+     * @param Cart $cart
+     * @param Product $product
+     * @return bool Return true if product was removed, false if could not find the product in the cart
+     */
+    public function removeProductFromCart(Cart $cart, Product $product)
+    {
+        $orderItem = $cart->getOrderItem($product);
+        if ($orderItem !== null) {
+            /** @var ArrayCollection $products */
+            $products = $cart->getProducts();
+            $products->removeElement($orderItem);
+
+            $this->entityManager->persist($cart);
+
+            $this->entityManager->remove($orderItem);
+            $this->entityManager->flush();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Cart $cart
+     * @param Product $product
+     * @param int $quantity
+     * @return bool Return true if quantity adjusted, false if could not find the product in the cart
+     */
+    public function setQuantityForProduct(Cart $cart, Product $product, int $quantity)
+    {
+        $orderItem = $cart->getOrderItem($product);
+        if ($orderItem !== null) {
+            $orderItem->setQuantity($quantity);
+
+            $this->entityManager->persist($cart);
+
+            $this->entityManager->persist($orderItem);
+            $this->entityManager->flush();
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
