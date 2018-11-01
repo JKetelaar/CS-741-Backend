@@ -16,15 +16,16 @@ security:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
-                check_path: /login_check
-                login_path: /login
+                check_path: /user/login_check
+                login_path: /user/login
+                default_target_path: /users/current
 
             logout:       true
             anonymous:    true
 
     access_control:
-    - { path: ^/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/user/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/admin/, role: ROLE_ADMIN }
