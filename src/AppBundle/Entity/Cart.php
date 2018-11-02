@@ -40,7 +40,8 @@ class Cart
     /**
      * @var User
      *
-     * @ORM\Column(name="user", type="object", nullable=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", inversedBy="cart")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      *
      * @Serializer\Groups({"default"})
      */
@@ -114,7 +115,7 @@ class Cart
     /**
      * @return User
      */
-    public function getUser()
+    public function getUser(): ?User
     {
         return $this->user;
     }
