@@ -104,6 +104,13 @@ fos_user:
 
 # Nelmio API Documentation Configuration
 nelmio_api_doc:
+    documentation:
+        host: cs741.test
+        schemes: [http]
+        info:
+            title: Josh & Jeroen
+            description: Our shopping cart software
+            version: 1.0.0
     areas:
         path_patterns:
-        - ^/api(?!/doc$)
+            - ^/api(?!/doc$)
