@@ -31,6 +31,13 @@ class User extends BaseUser
      */
     private $cart;
 
+    /**
+     * @var OrderAddress[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderAddress", mappedBy="user", orphanRemoval=true)
+     */
+    private $addresses;
+
     public function __construct()
     {
         parent::__construct();
@@ -64,5 +71,23 @@ class User extends BaseUser
         return $this;
     }
 
+    /**
+     * @return OrderAddress[]
+     */
+    public function getAddresses(): array
+    {
+        return $this->addresses;
+    }
 
+    /**
+     * @param OrderAddress[] $addresses
+     *
+     * @return User
+     */
+    public function setAddresses(array $addresses): User
+    {
+        $this->addresses = $addresses;
+
+        return $this;
+    }
 }
