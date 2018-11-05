@@ -5,8 +5,8 @@
 
 namespace AppBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
@@ -24,8 +24,45 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @var Cart
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Cart", mappedBy="user")
+     */
+    private $cart;
+
     public function __construct()
     {
         parent::__construct();
     }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return parent::getId();
+    }
+
+    /**
+     * @return Cart
+     */
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    /**
+     * @param Cart $cart
+     *
+     * @return User
+     */
+    public function setCart(Cart $cart): User
+    {
+        $this->cart = $cart;
+
+        return $this;
+    }
+
+
 }
