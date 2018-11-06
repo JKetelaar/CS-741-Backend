@@ -6,6 +6,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * OrderAddress
@@ -13,11 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="order_address")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderAddressRepository")
  *
- * TODO: Add user relation
  * TODO: Add order relation
  */
 class OrderAddress
 {
+    const SHIPPING_TYPE = 'shipping';
+    const BILLING_TYPE = 'billing';
+
     /**
      * @var int
      *
@@ -31,6 +34,8 @@ class OrderAddress
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $type;
 
@@ -38,6 +43,8 @@ class OrderAddress
      * @var string
      *
      * @ORM\Column(name="fullname", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $fullname;
 
@@ -45,6 +52,8 @@ class OrderAddress
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $address;
 
@@ -52,6 +61,8 @@ class OrderAddress
      * @var string
      *
      * @ORM\Column(name="secondary_address", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $secondaryAddress;
 
@@ -59,6 +70,8 @@ class OrderAddress
      * @var string
      *
      * @ORM\Column(name="city", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $city;
 
@@ -66,6 +79,8 @@ class OrderAddress
      * @var string
      *
      * @ORM\Column(name="state", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $state;
 
@@ -73,6 +88,8 @@ class OrderAddress
      * @var string
      *
      * @ORM\Column(name="zip_code", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $zipCode;
 
@@ -80,6 +97,8 @@ class OrderAddress
      * @var string
      *
      * @ORM\Column(name="phone_number", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $phoneNumber;
 
@@ -87,6 +106,8 @@ class OrderAddress
      * @var string
      *
      * @ORM\Column(name="instructions", type="text")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $instructions;
 

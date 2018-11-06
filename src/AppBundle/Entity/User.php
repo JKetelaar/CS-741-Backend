@@ -72,9 +72,26 @@ class User extends BaseUser
     }
 
     /**
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getBillingAddress(): ?OrderAddress
+    {
+        if ($this->getAddresses() !== null && count($this->getAddresses()) > 0) {
+            foreach ($this->getAddresses() as $address) {
+                if ($address->getType() === OrderAddress::BILLING_TYPE) {
+                    return $address;
+                }
+            }
+        }
+
+        return $this->getShippingAddress();
+    }
+
+    /**
      * @return OrderAddress[]
      */
-    public function getAddresses(): array
+    public function getAddresses()
     {
         return $this->addresses;
     }
@@ -89,5 +106,22 @@ class User extends BaseUser
         $this->addresses = $addresses;
 
         return $this;
+    }
+
+    /**
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getShippingAddress(): ?OrderAddress
+    {
+        if ($this->getAddresses() !== null && count($this->getAddresses()) > 0) {
+            foreach ($this->getAddresses() as $address) {
+                if ($address->getType() === OrderAddress::SHIPPING_TYPE) {
+                    return $address;
+                }
+            }
+        }
+
+        return null;
     }
 }
