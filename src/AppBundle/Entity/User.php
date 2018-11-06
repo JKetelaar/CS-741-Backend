@@ -35,6 +35,8 @@ class User extends BaseUser
      * @var OrderAddress[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderAddress", mappedBy="user", orphanRemoval=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $addresses;
 
@@ -74,7 +76,7 @@ class User extends BaseUser
     /**
      * @return OrderAddress[]
      */
-    public function getAddresses(): array
+    public function getAddresses()
     {
         return $this->addresses;
     }
