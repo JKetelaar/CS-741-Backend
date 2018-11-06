@@ -50,7 +50,7 @@ class Cart
     /**
      * @var Promotion
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Promotion", inversedBy="carts")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Promotion", inversedBy="carts")
      * @ORM\JoinColumn(name="promotion_id", referencedColumnName="id", nullable=true)
      *
      * @Serializer\Groups({"default"})
