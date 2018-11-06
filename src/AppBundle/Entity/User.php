@@ -35,8 +35,6 @@ class User extends BaseUser
      * @var OrderAddress[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderAddress", mappedBy="user", orphanRemoval=true)
-     *
-     * @Serializer\Groups({"default"})
      */
     private $addresses;
 
@@ -74,6 +72,23 @@ class User extends BaseUser
     }
 
     /**
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getBillingAddress(): ?OrderAddress
+    {
+        if ($this->getAddresses() !== null && count($this->getAddresses()) > 0) {
+            foreach ($this->getAddresses() as $address) {
+                if ($address->getType() === OrderAddress::BILLING_TYPE) {
+                    return $address;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return OrderAddress[]
      */
     public function getAddresses()
@@ -91,5 +106,22 @@ class User extends BaseUser
         $this->addresses = $addresses;
 
         return $this;
+    }
+
+    /**
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getShippingAddress(): ?OrderAddress
+    {
+        if ($this->getAddresses() !== null && count($this->getAddresses()) > 0) {
+            foreach ($this->getAddresses() as $address) {
+                if ($address->getType() === OrderAddress::SHIPPING_TYPE) {
+                    return $address;
+                }
+            }
+        }
+
+        return null;
     }
 }
