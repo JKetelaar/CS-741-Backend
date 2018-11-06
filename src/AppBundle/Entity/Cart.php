@@ -75,26 +75,6 @@ class Cart
     }
 
     /**
-     * @return OrderItem[]
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    /**
-     * @param OrderItem[] $products
-     *
-     * @return Cart
-     */
-    public function setProducts(array $products): Cart
-    {
-        $this->products = $products;
-
-        return $this;
-    }
-
-    /**
      * @param Product $product
      * @return OrderItem|null
      */
@@ -158,6 +138,46 @@ class Cart
     public function setGuestId(string $guestId): Cart
     {
         $this->guestId = $guestId;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getFinalPrice()
+    {
+        $total = 0.0;
+
+        foreach ($this->getProducts() as $product) {
+            $total += $product->getPrice() * $product->getQuantity();
+        }
+
+        if ($this->getPromotion() !== null) {
+            $total -= ($total / 100 * $this->getPromotion()->getPercentage());
+        }
+
+        return number_format(round($total, 2), 2, '.', '.');
+    }
+
+    /**
+     * @return OrderItem[]
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param OrderItem[] $products
+     *
+     * @return Cart
+     */
+    public function setProducts(array $products): Cart
+    {
+        $this->products = $products;
 
         return $this;
     }
