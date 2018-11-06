@@ -18,7 +18,7 @@ security:
                 provider: fos_userbundle
                 check_path: /user/login_check
                 login_path: /user/login
-                default_target_path: /users/current
+                default_target_path: /api/users/current
 
             logout:       true
             anonymous:    true
