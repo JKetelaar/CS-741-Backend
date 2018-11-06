@@ -78,7 +78,7 @@ class Promotion
     /**
      * @return string
      */
-    public function getCode(): string
+    public function getCode(): ?string
     {
         return $this->code;
     }
@@ -98,7 +98,7 @@ class Promotion
     /**
      * @return \DateTime
      */
-    public function getExpirationDate(): \DateTime
+    public function getExpirationDate(): ?\DateTime
     {
         return $this->expirationDate;
     }
@@ -118,7 +118,7 @@ class Promotion
     /**
      * @return float
      */
-    public function getPercentage(): float
+    public function getPercentage(): ?float
     {
         return $this->percentage;
     }
