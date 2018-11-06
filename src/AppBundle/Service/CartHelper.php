@@ -98,7 +98,7 @@ class CartHelper
     {
         $orderItem = new OrderItem();
         $orderItem->setProduct($product);
-        $orderItem->setPrice($product->getPrice());
+        $orderItem->setPrice($product->getFinalPrice());
         $orderItem->setName($product->getName());
         $orderItem->setQuantity(1);
 
