@@ -62,24 +62,26 @@ class AdminPromotionController extends Controller
      *
      * @SWG\Parameter(
      *     name="code",
-     *     in="query",
+     *     in="formData",
      *     type="string",
      *     description="Code for the promotion"
      * )
      *
      * @SWG\Parameter(
      *     name="percentage",
-     *     in="query",
+     *     in="formData",
      *     type="integer",
      *     description="Percentage of promotion"
      * )
      *
      * @SWG\Parameter(
      *     name="expirationDate",
-     *     in="query",
+     *     in="formData",
      *     type="string",
      *     description="Date of expiration (such as 2018-11-11 10:10:10)"
      * )
+     *
+     * @SWG\Post(consumes={"application/x-www-form-urlencoded"})
      *
      * @SWG\Tag(name="promotion")
      *
