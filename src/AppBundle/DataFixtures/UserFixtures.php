@@ -5,6 +5,7 @@
 
 namespace AppBundle\DataFixtures;
 
+use AppBundle\Entity\OrderAddress;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -44,7 +45,24 @@ class UserFixtures extends Fixture implements ContainerAwareInterface
         $user->setPlainPassword('user');
         $user->setRoles(['ROLE_USER']);
 
+        $shippingAddress = new OrderAddress();
+        $shippingAddress->setUser($user);
+        $shippingAddress->setAddress('1424 Vine Street');
+        $shippingAddress->setCity('La Crosse');
+        $shippingAddress->setFullname('Jeroen Ketelaar');
+        $shippingAddress->setInstructions('Leave at frontdoor');
+        $shippingAddress->setPhoneNumber('+1 651 440 7740');
+        $shippingAddress->setSecondaryAddress('Apt. #2');
+        $shippingAddress->setZipCode('54601');
+        $shippingAddress->setState('WI');
+        $shippingAddress->setType(OrderAddress::SHIPPING_TYPE);
+
+        $billingAddress = clone $shippingAddress;
+        $billingAddress->setType(OrderAddress::BILLING_TYPE);
+
         $manager->persist($user);
+        $manager->persist($shippingAddress);
+        $manager->persist($billingAddress);
 
         /*
          * Create admin
