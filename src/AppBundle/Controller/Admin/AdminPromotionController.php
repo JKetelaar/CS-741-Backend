@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author JKetelaar
+ */
 
 namespace AppBundle\Controller\Admin;
 
@@ -38,7 +41,6 @@ class AdminPromotionController extends Controller
      * Creates a new promotion entity.
      *
      * @Route("/new", name="admin_promotion_new")
-     * @Method({"POST"})
      *
      * @param Request $request
      * @return JsonResponse
@@ -49,14 +51,25 @@ class AdminPromotionController extends Controller
         $form = $this->createForm(PromotionType::class, $promotion);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $form->submit($request->request->all());
+
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($promotion);
             $em->flush();
 
             return new JsonResponse(SerializerManager::normalize($promotion));
         } else {
-            return new JsonResponse(['error' => 'Could not create promotion'], Response::HTTP_BAD_REQUEST);
+            $errors = array();
+            foreach ($form->all() as $child) {
+                $fieldName = $child->getName();
+                $fieldErrors = $form->get($child->getName())->getErrors(true);
+
+                foreach ($fieldErrors as $fieldError){
+                    $errors[$fieldName] = $fieldError->getMessage();
+                }
+            }
+            return new JsonResponse(['error' => 'Could not create promotion', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
         }
     }
 
