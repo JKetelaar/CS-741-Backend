@@ -91,6 +91,14 @@ class OrderAddress
     private $instructions;
 
     /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="addresses")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     */
+    private $user;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -274,6 +282,26 @@ class OrderAddress
     public function setInstructions(string $instructions): OrderAddress
     {
         $this->instructions = $instructions;
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return OrderAddress
+     */
+    public function setUser(User $user): OrderAddress
+    {
+        $this->user = $user;
 
         return $this;
     }
