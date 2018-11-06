@@ -177,6 +177,17 @@ class AdminPromotionController extends Controller
      * @param Request $request
      * @param Promotion $promotion
      * @return JsonResponse
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Deletes a promotion",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Promotion::class))
+     *     )
+     * )
+     *
+     * @SWG\Tag(name="promotion")
      */
     public function deleteAction(Request $request, Promotion $promotion)
     {
