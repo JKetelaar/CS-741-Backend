@@ -29,7 +29,7 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
 
         for ($i = 0; $i < 20; $i++) {
             $category = new Category();
-            $category->setName($faker->word);
+            $category->setName($faker->word . ' ' . $faker->word);
             $category->setFilename($faker->md5);
 
             $categories[] = $category;

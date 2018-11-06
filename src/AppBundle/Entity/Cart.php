@@ -48,6 +48,16 @@ class Cart
     private $user;
 
     /**
+     * @var Promotion
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Promotion", inversedBy="carts")
+     * @ORM\JoinColumn(name="promotion_id", referencedColumnName="id", nullable=true)
+     *
+     * @Serializer\Groups({"default"})
+     */
+    private $promotion;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="guest_id", type="string", length=255, nullable=true)
@@ -148,6 +158,26 @@ class Cart
     public function setGuestId(string $guestId): Cart
     {
         $this->guestId = $guestId;
+
+        return $this;
+    }
+
+    /**
+     * @return Promotion
+     */
+    public function getPromotion(): ?Promotion
+    {
+        return $this->promotion;
+    }
+
+    /**
+     * @param Promotion $promotion
+     *
+     * @return Cart
+     */
+    public function setPromotion(Promotion $promotion): Cart
+    {
+        $this->promotion = $promotion;
 
         return $this;
     }

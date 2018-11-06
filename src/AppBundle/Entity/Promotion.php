@@ -6,6 +6,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * Promotion
@@ -28,6 +29,8 @@ class Promotion
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255, unique=true)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $code;
 
@@ -35,6 +38,8 @@ class Promotion
      * @var \DateTime
      *
      * @ORM\Column(name="expiration_date", type="datetime")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $expirationDate;
 
@@ -42,8 +47,17 @@ class Promotion
      * @var float
      *
      * @ORM\Column(name="percentage", type="float")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $percentage;
+
+    /**
+     * @var Cart[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cart", mappedBy="promotion", orphanRemoval=true)
+     */
+    private $carts;
 
     /**
      * Promotion constructor.
@@ -117,6 +131,26 @@ class Promotion
     public function setPercentage(float $percentage): Promotion
     {
         $this->percentage = $percentage;
+
+        return $this;
+    }
+
+    /**
+     * @return Cart[]
+     */
+    public function getCarts()
+    {
+        return $this->carts;
+    }
+
+    /**
+     * @param Cart[] $carts
+     *
+     * @return Promotion
+     */
+    public function setCarts(array $carts): Promotion
+    {
+        $this->carts = $carts;
 
         return $this;
     }
