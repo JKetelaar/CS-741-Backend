@@ -85,7 +85,7 @@ class User extends BaseUser
             }
         }
 
-        return null;
+        return $this->getShippingAddress();
     }
 
     /**
