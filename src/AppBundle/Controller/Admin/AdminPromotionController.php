@@ -8,7 +8,6 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Promotion;
 use AppBundle\Form\PromotionType;
 use AppBundle\Service\SerializerManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,13 +24,11 @@ class AdminPromotionController extends Controller
     /**
      * Lists all promotion entities.
      *
-     * @Route("/", name="admin_promotion_index")
-     * @Method("GET")
+     * @Route("/", name="admin_promotion_index", methods={"GET"})
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $promotions = $em->getRepository('AppBundle:Promotion')->findAll();
 
         return new JsonResponse(SerializerManager::normalize($promotions));
@@ -40,7 +37,7 @@ class AdminPromotionController extends Controller
     /**
      * Creates a new promotion entity.
      *
-     * @Route("/new", name="admin_promotion_new")
+     * @Route("/new", name="admin_promotion_new", methods={"POST"})
      *
      * @param Request $request
      * @return JsonResponse
@@ -60,24 +57,27 @@ class AdminPromotionController extends Controller
 
             return new JsonResponse(SerializerManager::normalize($promotion));
         } else {
-            $errors = array();
+            $errors = [];
             foreach ($form->all() as $child) {
                 $fieldName = $child->getName();
                 $fieldErrors = $form->get($child->getName())->getErrors(true);
 
-                foreach ($fieldErrors as $fieldError){
+                foreach ($fieldErrors as $fieldError) {
                     $errors[$fieldName] = $fieldError->getMessage();
                 }
             }
-            return new JsonResponse(['error' => 'Could not create promotion', 'errors' => $errors], Response::HTTP_BAD_REQUEST);
+
+            return new JsonResponse(
+                ['error' => 'Could not create promotion', 'errors' => $errors],
+                Response::HTTP_BAD_REQUEST
+            );
         }
     }
 
     /**
      * Finds and displays a promotion entity.
      *
-     * @Route("/{id}", name="admin_promotion_show")
-     * @Method("GET")
+     * @Route("/{id}", name="admin_promotion_show", methods={"GET"})
      *
      * @param Promotion $promotion
      * @return JsonResponse
@@ -90,8 +90,7 @@ class AdminPromotionController extends Controller
     /**
      * Displays a form to edit an existing promotion entity.
      *
-     * @Route("/{id}/edit", name="admin_promotion_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_promotion_edit", methods={"POST"})
      *
      * @param Request $request
      * @param Promotion $promotion
@@ -99,31 +98,37 @@ class AdminPromotionController extends Controller
      */
     public function editAction(Request $request, Promotion $promotion)
     {
-        $deleteForm = $this->createDeleteForm($promotion);
-        $editForm = $this->createForm('AppBundle\Form\PromotionType', $promotion);
+        $editForm = $this->createForm(PromotionType::class, $promotion);
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        $editForm->submit($request->request->all());
+
+        if ($editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_promotion_edit', ['id' => $promotion->getId()]);
-        }
+            return new JsonResponse(SerializerManager::normalize($promotion));
+        } else {
+            $errors = [];
+            foreach ($editForm->all() as $child) {
+                $fieldName = $child->getName();
+                $fieldErrors = $editForm->get($child->getName())->getErrors(true);
 
-        return $this->render(
-            'promotion/edit.html.twig',
-            [
-                'promotion' => $promotion,
-                'edit_form' => $editForm->createView(),
-                'delete_form' => $deleteForm->createView(),
-            ]
-        );
+                foreach ($fieldErrors as $fieldError) {
+                    $errors[$fieldName] = $fieldError->getMessage();
+                }
+            }
+
+            return new JsonResponse(
+                ['error' => 'Could not edit promotion', 'errors' => $errors],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
     }
 
     /**
      * Deletes a promotion entity.
      *
-     * @Route("/{id}", name="admin_promotion_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_promotion_delete", methods={"DELETE"})
      *
      * @param Request $request
      * @param Promotion $promotion
