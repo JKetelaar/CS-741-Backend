@@ -8,7 +8,9 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Promotion;
 use AppBundle\Form\PromotionType;
 use AppBundle\Service\SerializerManager;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +27,16 @@ class AdminPromotionController extends Controller
      * Lists all promotion entities.
      *
      * @Route("/", name="admin_promotion_index", methods={"GET"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns all available promotions",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Promotion::class))
+     *     )
+     * )
+     * @SWG\Tag(name="promotion")
      */
     public function indexAction()
     {
@@ -38,6 +50,38 @@ class AdminPromotionController extends Controller
      * Creates a new promotion entity.
      *
      * @Route("/new", name="admin_promotion_new", methods={"POST"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Creates a new promotion",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Promotion::class))
+     *     )
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="code",
+     *     in="query",
+     *     type="string",
+     *     description="Code for the promotion"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="percentage",
+     *     in="query",
+     *     type="integer",
+     *     description="Percentage of promotion"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="expirationDate",
+     *     in="query",
+     *     type="string",
+     *     description="Date of expiration (such as 2018-11-11 10:10:10)"
+     * )
+     *
+     * @SWG\Tag(name="promotion")
      *
      * @param Request $request
      * @return JsonResponse
