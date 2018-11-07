@@ -63,26 +63,25 @@ class ProductController extends Controller
      *     description="Search query to search in the name and description of the products"
      * )
      *
+     * @SWG\Parameter(
+     *     name="category",
+     *     in="query",
+     *     type="integer",
+     *     description="Category ID to filter the products on"
+     * )
+     *
      * @SWG\Tag(name="products")
      */
     public function indexAction(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $order = [];
-
-        if (($orderBy = $request->get('orderby')) !== null) {
-            $order = [
-                $request->get('orderby') => ($orderType = $request->get(
-                    'ordertype'
-                )) !== null && $orderType ? $orderType : 'DESC',
-            ];
-        }
 
         $products = $entityManager->getRepository('AppBundle:Product')->getProducts(
             $request->get('orderby'),
             $request->get('ordertype'),
             $request->get('limit'),
-            $request->get('search')
+            $request->get('search'),
+            $request->get('category')
         );
 
         return new JsonResponse(SerializerManager::normalize($products, ['minimal']));
