@@ -124,4 +124,24 @@ class User extends BaseUser
 
         return null;
     }
+
+    /**
+     * @return string
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string[]
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
 }
