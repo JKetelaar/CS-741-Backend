@@ -8,6 +8,7 @@ namespace AppBundle\Service;
 use AppBundle\Service\Normalizers\DateTimeNormalizer;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -31,7 +32,7 @@ class SerializerManager
     public static function normalize($object, $groups = ['default'])
     {
         try {
-            return SerializerManager::getSerializers()->normalize($object, 'json', ['groups' => $groups]);
+            return self::getSerializers()->normalize($object, 'json', ['groups' => $groups]);
         } catch (AnnotationException $e) {
             return [];
         }
@@ -60,5 +61,16 @@ class SerializerManager
         $serializer = new Serializer($normalizers, $encoders);
 
         return $serializer;
+    }
+
+    /**
+     * @param $object
+     * @param array $groups
+     *
+     * @return JsonResponse
+     */
+    public static function normalizeAsJSONResponse($object, $groups = ['default'])
+    {
+        return new JsonResponse(self::normalizeAsJSONResponse($object, $groups));
     }
 }
