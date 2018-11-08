@@ -29,6 +29,9 @@ services:
         class: AppBundle\Service\FileUploader
         arguments: ['%upload_directory%']
 
+    form_error_helper:
+        class: AppBundle\Service\FormErrors
+
     guest_id_listener:
         class: AppBundle\Listener\GuestIDListener
         arguments: ['@cart_helper']
