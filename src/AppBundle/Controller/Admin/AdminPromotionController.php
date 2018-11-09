@@ -105,18 +105,8 @@ class AdminPromotionController extends Controller
 
             return new JsonResponse(SerializerManager::normalize($promotion));
         } else {
-            $errors = [];
-            foreach ($form->all() as $child) {
-                $fieldName = $child->getName();
-                $fieldErrors = $form->get($child->getName())->getErrors(true);
-
-                foreach ($fieldErrors as $fieldError) {
-                    $errors[$fieldName] = $fieldError->getMessage();
-                }
-            }
-
             return new JsonResponse(
-                ['error' => 'Could not create promotion', 'errors' => $errors],
+                ['error' => 'Could not create promotion', 'errors' => $this->get('form_error_helper')->getFormErrors($form)],
                 Response::HTTP_BAD_REQUEST
             );
         }
@@ -156,18 +146,8 @@ class AdminPromotionController extends Controller
 
             return new JsonResponse(SerializerManager::normalize($promotion));
         } else {
-            $errors = [];
-            foreach ($editForm->all() as $child) {
-                $fieldName = $child->getName();
-                $fieldErrors = $editForm->get($child->getName())->getErrors(true);
-
-                foreach ($fieldErrors as $fieldError) {
-                    $errors[$fieldName] = $fieldError->getMessage();
-                }
-            }
-
             return new JsonResponse(
-                ['error' => 'Could not edit promotion', 'errors' => $errors],
+                ['error' => 'Could not edit promotion', 'errors' => $this->get('form_error_helper')->getFormErrors($editForm)],
                 Response::HTTP_BAD_REQUEST
             );
         }
