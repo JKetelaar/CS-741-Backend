@@ -54,6 +54,15 @@ class CartHelper
     }
 
     /**
+     * @param Cart $cart
+     */
+    public function clearCart(Cart $cart)
+    {
+        $this->entityManager->remove($cart);
+        $this->entityManager->flush();
+    }
+
+    /**
      * @param Request $request
      * @param User|null $user
      *
