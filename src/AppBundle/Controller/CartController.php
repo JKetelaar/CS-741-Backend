@@ -206,4 +206,28 @@ class CartController extends Controller
 
         return new JsonResponse(SerializerManager::normalize($cart));
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * @Route("/clear", methods={"POST"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="success"
+     * )
+     *
+     * @SWG\Tag(name="cart")
+     */
+    public function clearAction(Request $request)
+    {
+        $cart = $this->get('cart_helper')->findCartForUserOrGuest($request, $this->getUser());
+
+        if ($cart !== null) {
+            $this->get('cart_helper')->clearCart($cart);
+        }
+
+        return new JsonResponse(['Cleared cart']);
+    }
 }
