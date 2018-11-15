@@ -7,6 +7,8 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Purchase;
 use AppBundle\Service\SerializerManager;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +27,16 @@ class AdminPurchaseController extends Controller
      * Lists all purchase entities.
      *
      * @Route("/", name="purchase_index", methods={"GET"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns all purchases",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Purchase::class))
+     *     )
+     * )
+     * @SWG\Tag(name="purchase")
      */
     public function indexAction()
     {
@@ -41,6 +53,13 @@ class AdminPurchaseController extends Controller
      *
      * @param Purchase $purchase
      * @return Response
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the purchase of the given ID",
+     *     @Model(type=AppBundle\Entity\Purchase::class))
+     * )
+     * @SWG\Tag(name="purchase")
      */
     public function showAction(Purchase $purchase)
     {

@@ -7,6 +7,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\PurchaseType;
 use AppBundle\Service\SerializerManager;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,33 @@ class PurchaseController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Creates a new purchase",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Purchase::class))
+     *     )
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="billingAddress",
+     *     in="formData",
+     *     type="string",
+     *     description="Billing address"
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="shippingAddress",
+     *     in="formData",
+     *     type="string",
+     *     description="Shipping address"
+     * )
+     *
+     * @SWG\Post(consumes={"application/x-www-form-urlencoded"})
+     *
+     * @SWG\Tag(name="promotion")
      */
     public function newAction(Request $request)
     {
