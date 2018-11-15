@@ -31,7 +31,7 @@ class Cart
     /**
      * @var OrderItem[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="cart", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="cart", orphanRemoval=false)
      *
      * @Serializer\Groups({"default"})
      */
