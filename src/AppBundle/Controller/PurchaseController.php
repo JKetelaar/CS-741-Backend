@@ -8,6 +8,7 @@ namespace AppBundle\Controller;
 use AppBundle\Form\PurchaseType;
 use AppBundle\Service\SerializerManager;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,6 +78,8 @@ class PurchaseController extends Controller
                 $em->persist($product);
             }
             $em->flush();
+
+            $this->get('cart_helper')->clearCart($cart);
 
             return SerializerManager::normalizeAsJSONResponse($purchase);
         }
