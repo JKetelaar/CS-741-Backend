@@ -38,6 +38,13 @@ class User extends BaseUser
      */
     private $addresses;
 
+    /**
+     * @var Purchase[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Purchase", mappedBy="user", orphanRemoval=true)
+     */
+    private $purchases;
+
     public function __construct()
     {
         parent::__construct();
@@ -143,5 +150,25 @@ class User extends BaseUser
     public function getRoles(): array
     {
         return $this->roles;
+    }
+
+    /**
+     * @return Purchase[]
+     */
+    public function getPurchases(): array
+    {
+        return $this->purchases;
+    }
+
+    /**
+     * @param Purchase[] $purchases
+     *
+     * @return User
+     */
+    public function setPurchases(array $purchases): User
+    {
+        $this->purchases = $purchases;
+
+        return $this;
     }
 }

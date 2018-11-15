@@ -22,7 +22,7 @@ class Promotion
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * 
+     *
      * @Serializer\Groups({"default"})
      */
     private $id;
@@ -60,6 +60,13 @@ class Promotion
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cart", mappedBy="promotion", orphanRemoval=true)
      */
     private $carts;
+
+    /**
+     * @var Purchase[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Purchase", mappedBy="promotion", orphanRemoval=true)
+     */
+    private $purchases;
 
     /**
      * Promotion constructor.
