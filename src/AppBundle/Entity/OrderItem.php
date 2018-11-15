@@ -73,7 +73,7 @@ class OrderItem
     private $cart;
 
     /**
-     * @var Cart
+     * @var Purchase
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Purchase", inversedBy="products")
      * @ORM\JoinColumn(name="purchase_id", referencedColumnName="id", nullable=true)
@@ -189,19 +189,19 @@ class OrderItem
     }
 
     /**
-     * @return Cart
+     * @return Purchase
      */
-    public function getPurchase(): Cart
+    public function getPurchase(): ?Purchase
     {
         return $this->purchase;
     }
 
     /**
-     * @param Cart $purchase
+     * @param Purchase $purchase
      *
      * @return OrderItem
      */
-    public function setPurchase(Cart $purchase): OrderItem
+    public function setPurchase(Purchase $purchase): OrderItem
     {
         $this->purchase = $purchase;
 

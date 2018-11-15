@@ -71,6 +71,6 @@ class SerializerManager
      */
     public static function normalizeAsJSONResponse($object, $groups = ['default'])
     {
-        return new JsonResponse(self::normalizeAsJSONResponse($object, $groups));
+        return new JsonResponse(self::normalize($object, $groups));
     }
 }

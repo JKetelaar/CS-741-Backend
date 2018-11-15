@@ -22,6 +22,8 @@ class Purchase
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $id;
 
@@ -67,6 +69,8 @@ class Purchase
      * @var string
      *
      * @ORM\Column(name="billing_address", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $billingAddress;
 
@@ -74,6 +78,8 @@ class Purchase
      * @var string
      *
      * @ORM\Column(name="shipping_address", type="string", length=255)
+     *
+     * @Serializer\Groups({"default"})
      */
     private $shippingAddress;
 
@@ -105,7 +111,7 @@ class Purchase
     /**
      * @return OrderItem[]
      */
-    public function getProducts(): ?array
+    public function getProducts()
     {
         return $this->products;
     }
@@ -135,7 +141,7 @@ class Purchase
      *
      * @return Purchase
      */
-    public function setUser(User $user): Purchase
+    public function setUser(?User $user): Purchase
     {
         $this->user = $user;
 
@@ -155,7 +161,7 @@ class Purchase
      *
      * @return Purchase
      */
-    public function setPromotion(Promotion $promotion): Purchase
+    public function setPromotion(?Promotion $promotion): Purchase
     {
         $this->promotion = $promotion;
 
@@ -175,7 +181,7 @@ class Purchase
      *
      * @return Purchase
      */
-    public function setGuestId(string $guestId): Purchase
+    public function setGuestId(?string $guestId): Purchase
     {
         $this->guestId = $guestId;
 

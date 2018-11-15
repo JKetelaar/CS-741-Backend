@@ -25,6 +25,10 @@ services:
         class: AppBundle\Service\CartHelper
         arguments: ['@Doctrine\ORM\EntityManagerInterface']
 
+    purchase_helper:
+        class: AppBundle\Service\PurchaseHelper
+        arguments: ['@Doctrine\ORM\EntityManagerInterface']
+
     file_uploader:
         class: AppBundle\Service\FileUploader
         arguments: ['%upload_directory%']
