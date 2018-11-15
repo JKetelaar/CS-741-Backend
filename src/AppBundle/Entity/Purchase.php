@@ -105,7 +105,7 @@ class Purchase
     /**
      * @return OrderItem[]
      */
-    public function getProducts(): array
+    public function getProducts(): ?array
     {
         return $this->products;
     }
@@ -125,7 +125,7 @@ class Purchase
     /**
      * @return User
      */
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -145,7 +145,7 @@ class Purchase
     /**
      * @return Promotion
      */
-    public function getPromotion(): Promotion
+    public function getPromotion(): ?Promotion
     {
         return $this->promotion;
     }
@@ -165,7 +165,7 @@ class Purchase
     /**
      * @return string
      */
-    public function getGuestId(): string
+    public function getGuestId(): ?string
     {
         return $this->guestId;
     }
@@ -185,7 +185,7 @@ class Purchase
     /**
      * @return string
      */
-    public function getBillingAddress(): string
+    public function getBillingAddress(): ?string
     {
         return $this->billingAddress;
     }
@@ -205,7 +205,7 @@ class Purchase
     /**
      * @return string
      */
-    public function getShippingAddress(): string
+    public function getShippingAddress(): ?string
     {
         return $this->shippingAddress;
     }
@@ -225,7 +225,7 @@ class Purchase
     /**
      * @return \DateTime
      */
-    public function getDate(): \DateTime
+    public function getDate(): ?\DateTime
     {
         return $this->date;
     }
