@@ -68,7 +68,7 @@ class OrderItem
      * @var Cart
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Cart", inversedBy="products")
-     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id", nullable=true)
      */
     private $cart;
 
@@ -76,7 +76,7 @@ class OrderItem
      * @var Cart
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Purchase", inversedBy="products")
-     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="purchase_id", referencedColumnName="id", nullable=true)
      */
     private $purchase;
 

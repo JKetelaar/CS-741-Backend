@@ -163,4 +163,24 @@ class Promotion
 
         return $this;
     }
+
+    /**
+     * @return Purchase[]
+     */
+    public function getPurchases(): array
+    {
+        return $this->purchases;
+    }
+
+    /**
+     * @param Purchase[] $purchases
+     *
+     * @return Promotion
+     */
+    public function setPurchases(array $purchases): Promotion
+    {
+        $this->purchases = $purchases;
+
+        return $this;
+    }
 }
