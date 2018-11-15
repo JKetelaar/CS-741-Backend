@@ -6,6 +6,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * Purchase
@@ -65,14 +66,14 @@ class Purchase
     /**
      * @var string
      *
-     * @ORM\Column(name="shippingAddress", type="string", length=255)
+     * @ORM\Column(name="billing_address", type="string", length=255)
      */
     private $billingAddress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="shippingAddress", type="string", length=255)
+     * @ORM\Column(name="shipping_address", type="string", length=255)
      */
     private $shippingAddress;
 
