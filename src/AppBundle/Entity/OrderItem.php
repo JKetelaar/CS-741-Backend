@@ -181,7 +181,7 @@ class OrderItem
      *
      * @return OrderItem
      */
-    public function setCart(Cart $cart): OrderItem
+    public function setCart(?Cart $cart): OrderItem
     {
         $this->cart = $cart;
 

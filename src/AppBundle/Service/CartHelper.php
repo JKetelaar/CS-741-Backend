@@ -58,6 +58,11 @@ class CartHelper
      */
     public function clearCart(Cart $cart)
     {
+        foreach ($cart->getProducts() as $product) {
+            $product->setCart(null);
+            $this->entityManager->persist($product);
+        }
+        
         $this->entityManager->remove($cart);
         $this->entityManager->flush();
     }
