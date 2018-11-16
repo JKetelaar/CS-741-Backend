@@ -77,7 +77,7 @@ class CartController extends Controller
         $productManager = $entityManager->getRepository('AppBundle:Product');
         $product = $productManager->findOneBy(['id' => $request->get('product')]);
         $quantity = intval($request->get('quantity'));
-        if ($quantity <= 0){
+        if ($quantity <= 0) {
             $quantity = 1;
         }
 

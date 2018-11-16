@@ -50,7 +50,7 @@ class PurchaseHelper
         $purchase->setGuestId($cart->getGuestId());
         $purchase->setPromotion($cart->getPromotion());
 
-        foreach ($purchase->getProducts() as $product){
+        foreach ($purchase->getProducts() as $product) {
             $product->setPurchase($purchase);
         }
 

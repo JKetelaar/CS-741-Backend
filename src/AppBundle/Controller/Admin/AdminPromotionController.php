@@ -106,7 +106,10 @@ class AdminPromotionController extends Controller
             return new JsonResponse(SerializerManager::normalize($promotion));
         } else {
             return new JsonResponse(
-                ['error' => 'Could not create promotion', 'errors' => $this->get('form_error_helper')->getFormErrors($form)],
+                [
+                    'error' => 'Could not create promotion',
+                    'errors' => $this->get('form_error_helper')->getFormErrors($form),
+                ],
                 Response::HTTP_BAD_REQUEST
             );
         }
@@ -147,7 +150,10 @@ class AdminPromotionController extends Controller
             return new JsonResponse(SerializerManager::normalize($promotion));
         } else {
             return new JsonResponse(
-                ['error' => 'Could not edit promotion', 'errors' => $this->get('form_error_helper')->getFormErrors($editForm)],
+                [
+                    'error' => 'Could not edit promotion',
+                    'errors' => $this->get('form_error_helper')->getFormErrors($editForm),
+                ],
                 Response::HTTP_BAD_REQUEST
             );
         }
