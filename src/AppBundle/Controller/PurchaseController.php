@@ -6,6 +6,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Purchase;
+use AppBundle\Entity\User;
 use AppBundle\Form\PurchaseType;
 use AppBundle\Service\SerializerManager;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -129,5 +130,48 @@ class PurchaseController extends Controller
                 Response::HTTP_BAD_REQUEST
             );
         }
+    }
+
+    /**
+     * Returns a purchase entity.
+     *
+     * @Route("/{id}", name="purchase_show", methods={"GET"})
+     *
+     * @param Request $request
+     * @param Purchase $purchase
+     * @return Response
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the purchase of the given ID",
+     *     @Model(type=AppBundle\Entity\Purchase::class))
+     * )
+     * @SWG\Tag(name="purchase")
+     */
+    public function showAction(Request $request, Purchase $purchase)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user !== null && $purchase->getUser() !== null){
+            if ($user->getId() !== $purchase->getUser()->getId()){
+                return new JsonResponse(['error' => 'User not allowed to view this order'], Response::HTTP_UNAUTHORIZED);
+            }
+        }
+
+        if ($purchase->getUser() !== null && $user === null){
+            return new JsonResponse(['error' => 'User most login to view this order'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($purchase->getGuestId() !== null && ($cookie = $request->cookies->get('guestid')) !== null){
+            if ($purchase->getGuestId() !== $cookie){
+                return new JsonResponse(['error' => 'Current guest not allowed to view this order'], Response::HTTP_UNAUTHORIZED);
+            }
+        }
+
+        if ($purchase->getGuestId() !== null && $cookie === null){
+            return new JsonResponse(['error' => 'Current guest not allowed to view this order'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return SerializerManager::normalizeAsJSONResponse($purchase);
     }
 }
