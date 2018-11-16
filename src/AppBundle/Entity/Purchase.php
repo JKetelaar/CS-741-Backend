@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 class Purchase
 {
     const STATE_COMPLETE = 'complete';
-    const STATE_AWAITING_PAYMENT = 'payment';
+    const STATE_AWAITING_PAYMENT = 'awaiting_payment';
 
     /**
      * @var int
