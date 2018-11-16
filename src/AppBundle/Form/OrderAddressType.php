@@ -1,11 +1,19 @@
 <?php
+/**
+ * @author JKetelaar
+ */
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\OrderAddress;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class OrderAddressType
+ * @package AppBundle\Form
+ */
 class OrderAddressType extends AbstractType
 {
     /**
@@ -13,15 +21,28 @@ class OrderAddressType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('type')->add('fullname')->add('address')->add('secondaryAddress')->add('city')->add('state')->add('zipCode')->add('phoneNumber')->add('instructions')->add('user');
-    }/**
+        $builder
+            ->add('type')
+            ->add('fullname')
+            ->add('address')
+            ->add('secondaryAddress')
+            ->add('city')
+            ->add('state')
+            ->add('zipCode')
+            ->add('phoneNumber')
+            ->add('instructions');
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\OrderAddress'
-        ));
+        $resolver->setDefaults(
+            [
+                'data_class' => OrderAddress::class,
+            ]
+        );
     }
 
     /**
@@ -31,6 +52,5 @@ class OrderAddressType extends AbstractType
     {
         return 'appbundle_orderaddress';
     }
-
 
 }

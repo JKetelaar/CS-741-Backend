@@ -22,8 +22,12 @@ class PurchaseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('billingAddress')
-            ->add('shippingAddress');
+            ->add('billingAddress', OrderAddressType::class,
+                ['required' => true]
+            )
+            ->add('shippingAddress', OrderAddressType::class,
+                ['required' => true]
+            );
     }
 
     /**

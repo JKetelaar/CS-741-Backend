@@ -118,20 +118,18 @@ class OrderAddress
     private $user;
 
     /**
-     * @var Purchase
+     * @var Purchase[]
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Purchase", inversedBy="billingAddress")
-     * @ORM\JoinColumn(name="purchase_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Purchase", mappedBy="billingAddress")
      */
-    private $billingPurchase;
+    private $billingPurchases;
 
     /**
-     * @var Purchase
+     * @var Purchase[]
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Purchase", inversedBy="shippingAddress")
-     * @ORM\JoinColumn(name="purchase_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Purchase", mappedBy="shippingAddress")
      */
-    private $shippingPurchase;
+    private $shippingPurchases;
 
     /**
      * @return int
@@ -144,7 +142,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -164,7 +162,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getFullname(): string
+    public function getFullname(): ?string
     {
         return $this->fullname;
     }
@@ -184,7 +182,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
@@ -204,7 +202,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getSecondaryAddress(): string
+    public function getSecondaryAddress(): ?string
     {
         return $this->secondaryAddress;
     }
@@ -224,7 +222,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -244,7 +242,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getState(): string
+    public function getState(): ?string
     {
         return $this->state;
     }
@@ -264,7 +262,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getZipCode(): string
+    public function getZipCode(): ?string
     {
         return $this->zipCode;
     }
@@ -284,7 +282,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getPhoneNumber(): string
+    public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }
@@ -304,7 +302,7 @@ class OrderAddress
     /**
      * @return string
      */
-    public function getInstructions(): string
+    public function getInstructions(): ?string
     {
         return $this->instructions;
     }
@@ -337,6 +335,46 @@ class OrderAddress
     public function setUser(User $user): OrderAddress
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Purchase[]
+     */
+    public function getBillingPurchases()
+    {
+        return $this->billingPurchases;
+    }
+
+    /**
+     * @param Purchase[] $billingPurchases
+     *
+     * @return OrderAddress
+     */
+    public function setBillingPurchases(array $billingPurchases): OrderAddress
+    {
+        $this->billingPurchases = $billingPurchases;
+
+        return $this;
+    }
+
+    /**
+     * @return Purchase[]
+     */
+    public function getShippingPurchases()
+    {
+        return $this->shippingPurchases;
+    }
+
+    /**
+     * @param Purchase[] $shippingPurchases
+     *
+     * @return OrderAddress
+     */
+    public function setShippingPurchases(array $shippingPurchases): OrderAddress
+    {
+        $this->shippingPurchases = $shippingPurchases;
 
         return $this;
     }

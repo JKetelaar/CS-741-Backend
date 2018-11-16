@@ -66,18 +66,20 @@ class Purchase
     private $guestId;
 
     /**
-     * @var string
+     * @var OrderAddress
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderAddress", mappedBy="billingPurchase")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OrderAddress", inversedBy="billingPurchases")
+     * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
      *
      * @Serializer\Groups({"default"})
      */
     private $billingAddress;
 
     /**
-     * @var string
+     * @var OrderAddress
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderAddress", mappedBy="shippingPurchase")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OrderAddress", inversedBy="shippingPurchases")
+     * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
      *
      * @Serializer\Groups({"default"})
      */
@@ -189,19 +191,19 @@ class Purchase
     }
 
     /**
-     * @return string
+     * @return OrderAddress
      */
-    public function getBillingAddress(): ?string
+    public function getBillingAddress(): ?OrderAddress
     {
         return $this->billingAddress;
     }
 
     /**
-     * @param string $billingAddress
+     * @param OrderAddress $billingAddress
      *
      * @return Purchase
      */
-    public function setBillingAddress(string $billingAddress): Purchase
+    public function setBillingAddress(OrderAddress $billingAddress): Purchase
     {
         $this->billingAddress = $billingAddress;
 
@@ -209,20 +211,21 @@ class Purchase
     }
 
     /**
-     * @return string
+     * @return OrderAddress
      */
-    public function getShippingAddress(): ?string
+    public function getShippingAddress(): ?OrderAddress
     {
         return $this->shippingAddress;
     }
 
     /**
-     * @param string $shippingAddress
+     * @param OrderAddress $shippingAddress
      *
      * @return Purchase
      */
-    public function setShippingAddress(string $shippingAddress): Purchase
+    public function setShippingAddress(OrderAddress $shippingAddress): Purchase
     {
+
         $this->shippingAddress = $shippingAddress;
 
         return $this;
