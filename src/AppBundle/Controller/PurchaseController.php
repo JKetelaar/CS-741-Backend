@@ -77,11 +77,6 @@ class PurchaseController extends Controller
             $em->persist($purchase->getBillingAddress());
             $em->persist($purchase);
 
-//            foreach ($purchase->getProducts() as $product) {
-//                var_dump($product);
-//                die();
-//                $em->persist($product);
-//            }
             $em->flush();
 
             $this->get('cart_helper')->clearCart($cart);
