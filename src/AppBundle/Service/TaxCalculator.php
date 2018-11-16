@@ -21,21 +21,43 @@ class TaxCalculator
     /**
      * @param float $price
      * @param string $state
+     * @param bool $round
      * @return float
      */
-    public function calculateTax(float $price, string $state): float
+    public static function calculateWithTax(float $price, string $state, bool $round = true): float
     {
-        $tax = $this->getTaxForState($state);
+        $total = $price + self::calculateTax($price, $state, $round);
+
+        if ($round) {
+            return round($total, 2);
+        } else {
+            return $total;
+        }
+    }
+
+    /**
+     * @param float $price
+     * @param string $state
+     * @param bool $round
+     * @return float
+     */
+    public static function calculateTax(float $price, string $state, bool $round = true): float
+    {
+        $tax = self::getTaxForState($state);
         $taxPrice = $price / 100 * $tax;
 
-        return round($price + $taxPrice, 2);
+        if ($round) {
+            return round($taxPrice, 2);
+        } else {
+            return $taxPrice;
+        }
     }
 
     /**
      * @param string $state
      * @return float
      */
-    public function getTaxForState(string $state): float
+    public static function getTaxForState(string $state): float
     {
         if (isset(self::TAX[$state])) {
             $tax = self::TAX[$state];

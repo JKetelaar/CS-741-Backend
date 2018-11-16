@@ -5,6 +5,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Service\TaxCalculator;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
@@ -124,26 +125,6 @@ class Purchase
     }
 
     /**
-     * @return OrderItem[]
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    /**
-     * @param OrderItem[] $products
-     *
-     * @return Purchase
-     */
-    public function setProducts(array $products): Purchase
-    {
-        $this->products = $products;
-
-        return $this;
-    }
-
-    /**
      * @return User
      */
     public function getUser(): ?User
@@ -159,26 +140,6 @@ class Purchase
     public function setUser(?User $user): Purchase
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return Promotion
-     */
-    public function getPromotion(): ?Promotion
-    {
-        return $this->promotion;
-    }
-
-    /**
-     * @param Promotion $promotion
-     *
-     * @return Purchase
-     */
-    public function setPromotion(?Promotion $promotion): Purchase
-    {
-        $this->promotion = $promotion;
 
         return $this;
     }
@@ -219,27 +180,6 @@ class Purchase
     public function setBillingAddress(OrderAddress $billingAddress): Purchase
     {
         $this->billingAddress = $billingAddress;
-
-        return $this;
-    }
-
-    /**
-     * @return OrderAddress
-     */
-    public function getShippingAddress(): ?OrderAddress
-    {
-        return $this->shippingAddress;
-    }
-
-    /**
-     * @param OrderAddress $shippingAddress
-     *
-     * @return Purchase
-     */
-    public function setShippingAddress(OrderAddress $shippingAddress): Purchase
-    {
-
-        $this->shippingAddress = $shippingAddress;
 
         return $this;
     }
@@ -292,5 +232,122 @@ class Purchase
         $this->state = self::STATE_COMPLETE;
 
         return $this;
+    }
+
+    /**
+     * @return float
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getFinalPrice()
+    {
+        $total = $this->getFinalPriceWithoutTax(false);
+
+        if ($this->getShippingAddress() !== null) {
+            $total += $this->getTax(false);
+        }
+
+        return number_format(round($total, 2), 2, '.', ',');
+    }
+
+    /**
+     * @param bool $round
+     * @return float
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getFinalPriceWithoutTax(bool $round = true)
+    {
+        $total = 0.0;
+
+        foreach ($this->getProducts() as $product) {
+            $total += $product->getPrice() * $product->getQuantity();
+        }
+
+        if ($this->getPromotion() !== null) {
+            $total -= ($total / 100 * $this->getPromotion()->getPercentage());
+        }
+
+        if ($round) {
+            return number_format(round($total, 2), 2, '.', ',');
+        } else {
+            return $total;
+        }
+    }
+
+    /**
+     * @return OrderItem[]
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param OrderItem[] $products
+     *
+     * @return Purchase
+     */
+    public function setProducts(array $products): Purchase
+    {
+        $this->products = $products;
+
+        return $this;
+    }
+
+    /**
+     * @return Promotion
+     */
+    public function getPromotion(): ?Promotion
+    {
+        return $this->promotion;
+    }
+
+    /**
+     * @param Promotion $promotion
+     *
+     * @return Purchase
+     */
+    public function setPromotion(?Promotion $promotion): Purchase
+    {
+        $this->promotion = $promotion;
+
+        return $this;
+    }
+
+    /**
+     * @return OrderAddress
+     */
+    public function getShippingAddress(): ?OrderAddress
+    {
+        return $this->shippingAddress;
+    }
+
+    /**
+     * @param OrderAddress $shippingAddress
+     *
+     * @return Purchase
+     */
+    public function setShippingAddress(OrderAddress $shippingAddress): Purchase
+    {
+
+        $this->shippingAddress = $shippingAddress;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $round
+     * @return float
+     *
+     * @Serializer\Groups({"default"})
+     */
+    public function getTax(bool $round = true)
+    {
+        return TaxCalculator::calculateTax(
+            $this->getFinalPriceWithoutTax(false),
+            $this->getShippingAddress()->getState(),
+            $round
+        );
     }
 }
