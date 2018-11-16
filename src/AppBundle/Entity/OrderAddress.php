@@ -13,8 +13,6 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  *
  * @ORM\Table(name="order_address")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderAddressRepository")
- *
- * TODO: Add order relation
  */
 class OrderAddress
 {
@@ -118,6 +116,22 @@ class OrderAddress
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
     private $user;
+
+    /**
+     * @var Purchase
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Purchase", inversedBy="billingAddress")
+     * @ORM\JoinColumn(name="purchase_id", referencedColumnName="id")
+     */
+    private $billingPurchase;
+
+    /**
+     * @var Purchase
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Purchase", inversedBy="shippingAddress")
+     * @ORM\JoinColumn(name="purchase_id", referencedColumnName="id")
+     */
+    private $shippingPurchase;
 
     /**
      * @return int

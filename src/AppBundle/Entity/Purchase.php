@@ -68,7 +68,7 @@ class Purchase
     /**
      * @var string
      *
-     * @ORM\Column(name="billing_address", type="string", length=255)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderAddress", mappedBy="billingPurchase")
      *
      * @Serializer\Groups({"default"})
      */
@@ -77,7 +77,7 @@ class Purchase
     /**
      * @var string
      *
-     * @ORM\Column(name="shipping_address", type="string", length=255)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderAddress", mappedBy="shippingPurchase")
      *
      * @Serializer\Groups({"default"})
      */
