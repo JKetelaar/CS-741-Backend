@@ -5,16 +5,16 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Purchase;
+use AppBundle\Entity\OrderAddress;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class PurchaseType
+ * Class OrderAddressType
  * @package AppBundle\Form
  */
-class PurchaseType extends AbstractType
+class OrderAddressType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -22,16 +22,15 @@ class PurchaseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                'billingAddress',
-                OrderAddressType::class,
-                ['required' => true]
-            )
-            ->add(
-                'shippingAddress',
-                OrderAddressType::class,
-                ['required' => true]
-            );
+            ->add('type')
+            ->add('fullname')
+            ->add('address')
+            ->add('secondaryAddress')
+            ->add('city')
+            ->add('state')
+            ->add('zipCode')
+            ->add('phoneNumber')
+            ->add('instructions');
     }
 
     /**
@@ -41,7 +40,7 @@ class PurchaseType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Purchase::class,
+                'data_class' => OrderAddress::class,
             ]
         );
     }
@@ -51,7 +50,7 @@ class PurchaseType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_purchase';
+        return 'appbundle_orderaddress';
     }
 
 }

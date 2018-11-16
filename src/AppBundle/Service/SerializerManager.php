@@ -24,6 +24,17 @@ class SerializerManager
 {
 
     /**
+     * @param $object
+     * @param array $groups
+     *
+     * @return JsonResponse
+     */
+    public static function normalizeAsJSONResponse($object, $groups = ['default'])
+    {
+        return new JsonResponse(self::normalize($object, $groups));
+    }
+
+    /**
      * @param mixed $object
      * @param array $groups
      *
@@ -61,16 +72,5 @@ class SerializerManager
         $serializer = new Serializer($normalizers, $encoders);
 
         return $serializer;
-    }
-
-    /**
-     * @param $object
-     * @param array $groups
-     *
-     * @return JsonResponse
-     */
-    public static function normalizeAsJSONResponse($object, $groups = ['default'])
-    {
-        return new JsonResponse(self::normalize($object, $groups));
     }
 }

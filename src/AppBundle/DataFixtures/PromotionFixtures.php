@@ -5,9 +5,6 @@
 
 namespace AppBundle\DataFixtures;
 
-use AppBundle\Entity\Cart;
-use AppBundle\Entity\OrderItem;
-use AppBundle\Entity\Product;
 use AppBundle\Entity\Promotion;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

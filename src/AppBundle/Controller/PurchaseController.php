@@ -40,7 +40,7 @@ class PurchaseController extends Controller
      * )
      *
      * @SWG\Parameter(
-     *     name="billingAddress",
+     *     name="billingAddress['fullname']",
      *     in="formData",
      *     type="string",
      *     description="Billing address"
@@ -55,7 +55,7 @@ class PurchaseController extends Controller
      *
      * @SWG\Post(consumes={"application/x-www-form-urlencoded"})
      *
-     * @SWG\Tag(name="promotion")
+     * @SWG\Tag(name="purchase")
      */
     public function newAction(Request $request)
     {
@@ -73,10 +73,10 @@ class PurchaseController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $em->persist($purchase->getShippingAddress());
+            $em->persist($purchase->getBillingAddress());
             $em->persist($purchase);
-            foreach ($purchase->getProducts() as $product) {
-                $em->persist($product);
-            }
+
             $em->flush();
 
             $this->get('cart_helper')->clearCart($cart);

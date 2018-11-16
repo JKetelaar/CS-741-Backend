@@ -62,7 +62,7 @@ class CartHelper
             $product->setCart(null);
             $this->entityManager->persist($product);
         }
-        
+
         $this->entityManager->remove($cart);
         $this->entityManager->flush();
     }
