@@ -26,7 +26,7 @@ class AdminPurchaseController extends Controller
     /**
      * Lists all purchase entities.
      *
-     * @Route("/", name="purchase_index", methods={"GET"})
+     * @Route("/", name="admin_purchase_index", methods={"GET"})
      *
      * @SWG\Response(
      *     response=200,
@@ -49,7 +49,7 @@ class AdminPurchaseController extends Controller
     /**
      * Finds and displays a purchase entity.
      *
-     * @Route("/{id}", name="purchase_show", methods={"GET"})
+     * @Route("/{id}", name="admin_purchase_show", methods={"GET"})
      *
      * @param Purchase $purchase
      * @return Response

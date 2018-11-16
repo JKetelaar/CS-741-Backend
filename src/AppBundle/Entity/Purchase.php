@@ -93,6 +93,8 @@ class Purchase
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     *
+     * @Serializer\Groups({"default"})
      */
     private $date;
 
