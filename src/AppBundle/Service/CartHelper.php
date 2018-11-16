@@ -46,8 +46,8 @@ class CartHelper
 
         if ($user !== null && $user instanceof User) {
             $cart = $cartRepository->findOneBy(['user' => $user]);
-        } else {
-            $cart = $cartRepository->findOneBy(['guestId' => $request->cookies->get('guestid')]);
+        } elseif (($cookie = $request->cookies->get('guestid')) !== null) {
+            $cart = $cartRepository->findOneBy(['guestId' => $cookie]);
         }
 
         return $cart;
