@@ -55,7 +55,7 @@ class PurchaseController extends Controller
      *
      * @SWG\Post(consumes={"application/x-www-form-urlencoded"})
      *
-     * @SWG\Tag(name="promotion")
+     * @SWG\Tag(name="purchase")
      */
     public function newAction(Request $request)
     {
