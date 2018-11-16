@@ -5,6 +5,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Purchase;
 use AppBundle\Form\PurchaseType;
 use AppBundle\Service\SerializerManager;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -88,5 +89,45 @@ class PurchaseController extends Controller
             ['error' => 'Could not create purchase', 'errors' => $this->get('form_error_helper')->getFormErrors($form)],
             Response::HTTP_BAD_REQUEST
         );
+    }
+
+    /**
+     * Completes purchase.
+     *
+     * @Route("/complete/{id}", name="purchase_complete", methods={"POST"})
+     *
+     * @param Request $request
+     * @param Purchase $purchase
+     * @return JsonResponse
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Creates a new purchase",
+     *     @SWG\Schema(
+     *         type="array",
+     *         @SWG\Items(ref=@Model(type=AppBundle\Entity\Purchase::class))
+     *     )
+     * )
+     *
+     * @SWG\Tag(name="purchase")
+     */
+    public function completePurchase(Request $request, Purchase $purchase)
+    {
+        if ($purchase->getState() === Purchase::STATE_AWAITING_PAYMENT) {
+            $purchase->setStateComplete();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($purchase);
+            $em->flush();
+
+            return SerializerManager::normalizeAsJSONResponse($purchase);
+        } else {
+            return new JsonResponse(
+                [
+                    'error' => 'Purchase already completed',
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
     }
 }

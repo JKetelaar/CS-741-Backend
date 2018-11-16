@@ -16,6 +16,9 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  */
 class Purchase
 {
+    const STATE_COMPLETE = 'complete';
+    const STATE_AWAITING_PAYMENT = 'payment';
+
     /**
      * @var int
      *
@@ -93,11 +96,21 @@ class Purchase
     private $date;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="state", type="string", length=255, nullable=true)
+     *
+     * @Serializer\Groups({"default"})
+     */
+    private $state;
+
+    /**
      * Purchase constructor.
      */
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->state = self::STATE_AWAITING_PAYMENT;
     }
 
     /**
@@ -247,6 +260,36 @@ class Purchase
     public function setDate(\DateTime $date): Purchase
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string $state
+     *
+     * @return Purchase
+     */
+    public function setState(string $state): Purchase
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * @return Purchase
+     */
+    public function setStateComplete(): Purchase
+    {
+        $this->state = self::STATE_COMPLETE;
 
         return $this;
     }
