@@ -159,7 +159,7 @@ class Cart
             $total -= ($total / 100 * $this->getPromotion()->getPercentage());
         }
 
-        return number_format(round($total, 2), 2, '.', '.');
+        return number_format(round($total, 2), 2, '.', ',');
     }
 
     /**
