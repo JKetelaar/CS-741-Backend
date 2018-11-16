@@ -29,6 +29,9 @@ services:
         class: AppBundle\Service\PurchaseHelper
         arguments: ['@Doctrine\ORM\EntityManagerInterface']
 
+    tax_calculator:
+        class: AppBundle\Service\TaxCalculator
+
     file_uploader:
         class: AppBundle\Service\FileUploader
         arguments: ['%upload_directory%']
