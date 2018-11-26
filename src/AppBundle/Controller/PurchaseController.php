@@ -121,6 +121,8 @@ class PurchaseController extends Controller
             $em->persist($purchase);
             $em->flush();
 
+            $this->get('purchase_helper')->sendEmail($purchase);
+
             return SerializerManager::normalizeAsJSONResponse($purchase);
         } else {
             return new JsonResponse(
@@ -152,24 +154,32 @@ class PurchaseController extends Controller
     {
         /** @var User $user */
         $user = $this->getUser();
-        if ($user !== null && $purchase->getUser() !== null){
-            if ($user->getId() !== $purchase->getUser()->getId()){
-                return new JsonResponse(['error' => 'User not allowed to view this order'], Response::HTTP_UNAUTHORIZED);
+        if ($user !== null && $purchase->getUser() !== null) {
+            if ($user->getId() !== $purchase->getUser()->getId()) {
+                return new JsonResponse(
+                    ['error' => 'User not allowed to view this order'], Response::HTTP_UNAUTHORIZED
+                );
             }
         }
 
-        if ($purchase->getUser() !== null && $user === null){
+        if ($purchase->getUser() !== null && $user === null) {
             return new JsonResponse(['error' => 'User most login to view this order'], Response::HTTP_UNAUTHORIZED);
         }
 
-        if ($purchase->getGuestId() !== null && ($cookie = $request->cookies->get('guestid')) !== null){
-            if ($purchase->getGuestId() !== $cookie){
-                return new JsonResponse(['error' => 'Current guest not allowed to view this order'], Response::HTTP_UNAUTHORIZED);
+        if ($purchase->getGuestId() !== null && ($cookie = $request->cookies->get('guestid')) !== null) {
+            if ($purchase->getGuestId() !== $cookie) {
+                return new JsonResponse(
+                    ['error' => 'Current guest not allowed to view this order'],
+                    Response::HTTP_UNAUTHORIZED
+                );
             }
         }
 
-        if ($purchase->getGuestId() !== null && $cookie === null){
-            return new JsonResponse(['error' => 'Current guest not allowed to view this order'], Response::HTTP_UNAUTHORIZED);
+        if ($purchase->getGuestId() !== null && $cookie === null) {
+            return new JsonResponse(
+                ['error' => 'Current guest not allowed to view this order'],
+                Response::HTTP_UNAUTHORIZED
+            );
         }
 
         return SerializerManager::normalizeAsJSONResponse($purchase);
