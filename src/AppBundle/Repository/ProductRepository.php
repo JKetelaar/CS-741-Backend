@@ -28,6 +28,9 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder('product')
             ->from('AppBundle:Product', 'p');
 
+        $query->andWhere('product.active = :active');
+        $query->setParameter('active', true);
+
         if ($category !== null) {
             $query->andWhere('product.category = :category');
             $query->setParameter('category', $category);
