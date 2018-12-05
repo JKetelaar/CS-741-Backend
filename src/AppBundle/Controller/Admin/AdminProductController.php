@@ -5,9 +5,12 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\DataFixtures\ProductFixtures;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\ProductImage;
 use AppBundle\Form\ProductType;
 use AppBundle\Service\SerializerManager;
+use Faker\Factory;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -51,7 +54,19 @@ class AdminProductController extends Controller
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
+            $faker = Factory::create();
+            $directory = $this->getParameter('upload_directory');
             $em = $this->getDoctrine()->getManager();
+
+            $images = ProductFixtures::generateImagesArray($faker, $directory, 1);
+            foreach ($images as $image) {
+                $productImage = new ProductImage();
+                $productImage->setProduct($product);
+                $productImage->setFilename(basename($image));
+
+                $em->persist($productImage);
+            }
+
             $em->persist($product);
             $em->flush();
 
