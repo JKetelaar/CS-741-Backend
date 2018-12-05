@@ -2,10 +2,17 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Product;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class ProductType
+ * @package AppBundle\Form
+ */
 class ProductType extends AbstractType
 {
     /**
@@ -13,7 +20,31 @@ class ProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')->add('description')->add('price');
+        $builder
+            ->add('name')
+            ->add('description')
+            ->add('price')
+            ->add('quantity')
+            /* Promotion */
+            ->add('promoPrice', TextType::class, ['required' => false])
+            ->add(
+                'promoFrom',
+                DateType::class,
+                [
+                    'required' => false,
+                    'format' => 'yyyy-MM-dd  HH:mm:ss',
+                    'widget' => 'single_text',
+                ]
+            )
+            ->add(
+                'promoTo',
+                DateType::class,
+                [
+                    'required' => false,
+                    'format' => 'yyyy-MM-dd  HH:mm:ss',
+                    'widget' => 'single_text',
+                ]
+            );
     }
 
     /**
@@ -23,7 +54,7 @@ class ProductType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'AppBundle\Entity\Product',
+                'data_class' => Product::class,
             ]
         );
     }
@@ -35,6 +66,4 @@ class ProductType extends AbstractType
     {
         return 'appbundle_product';
     }
-
-
 }
