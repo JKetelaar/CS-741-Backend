@@ -108,7 +108,7 @@ class Product
     /**
      * @var ProductImage[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductImage", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductImage", mappedBy="product", orphanRemoval=true)
      *
      * @Serializer\Groups({"default"})
      */
@@ -117,7 +117,7 @@ class Product
     /**
      * @var OrderItem[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderItem", mappedBy="product", orphanRemoval=true)
      */
     private $orderItems;
 
