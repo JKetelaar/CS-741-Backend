@@ -102,10 +102,11 @@ class ProductFixtures extends Fixture implements ContainerAwareInterface
         $manager->flush();
     }
 
-    private function generateImagesArray($faker, $directory): array
+    public static function generateImagesArray($faker, $directory, $limit = self::IMAGE_AMOUNT): array
     {
         $images = [];
-        for ($j = 0; $j < self::IMAGE_AMOUNT; $j++) {
+
+        for ($j = 0; $j < $limit; $j++) {
             $image = $faker->image('/tmp');
             $filename = md5($image).'.jpg';
 
