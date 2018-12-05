@@ -152,7 +152,7 @@ class Product
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -172,7 +172,7 @@ class Product
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -232,7 +232,7 @@ class Product
     /**
      * @return int
      */
-    public function getQuantity(): int
+    public function getQuantity(): ?int
     {
         return $this->quantity;
     }
@@ -252,7 +252,7 @@ class Product
     /**
      * @return \DateTime
      */
-    public function getCreationDate(): \DateTime
+    public function getCreationDate(): ?\DateTime
     {
         return $this->creationDate;
     }
@@ -294,7 +294,7 @@ class Product
      *
      * @Serializer\Groups({"minimal"})
      */
-    public function getFinalPrice(): float
+    public function getFinalPrice(): ?float
     {
         return $this->hasPromo() ? $this->getPromoPrice() : $this->getPrice();
     }
@@ -359,7 +359,7 @@ class Product
     /**
      * @return float
      */
-    public function getPrice(): float
+    public function getPrice(): ?float
     {
         return $this->price;
     }
@@ -395,7 +395,7 @@ class Product
     /**
      * @return Category
      */
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
