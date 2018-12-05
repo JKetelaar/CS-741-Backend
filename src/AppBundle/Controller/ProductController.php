@@ -187,21 +187,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Creates a form to delete a product entity.
-     *
-     * @param Product $product The product entity
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createDeleteForm(Product $product)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('product_delete', ['id' => $product->getId()]))
-            ->setMethod('DELETE')
-            ->getForm();
-    }
-
-    /**
      * Deletes a product entity.
      *
      * @Route("/{id}", name="product_delete", methods={"DELETE"})
@@ -209,7 +194,7 @@ class ProductController extends Controller
      * @param Request $request
      * @param Product $product
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return JsonResponse
      *
      * @SWG\Response(
      *     response=200,
@@ -220,15 +205,10 @@ class ProductController extends Controller
      */
     public function deleteAction(Request $request, Product $product)
     {
-        $form = $this->createDeleteForm($product);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($product);
+        $em->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($product);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('product_index');
+        return new JsonResponse(['Product deleted']);
     }
 }
