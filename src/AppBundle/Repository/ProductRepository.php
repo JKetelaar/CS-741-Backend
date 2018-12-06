@@ -46,7 +46,7 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
                 $orderType = 'DESC';
             }
 
-            $query->orderBy('product.'.$orderBy, $orderType);
+//            $query->addOrderBy('product.'.$orderBy, $orderType);
         }
 
         if ($limit !== null) {
