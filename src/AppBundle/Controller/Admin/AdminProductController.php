@@ -36,7 +36,7 @@ class AdminProductController extends Controller
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      *
      * @SWG\Response(
      *     response=200,
@@ -90,7 +90,7 @@ class AdminProductController extends Controller
      * @param Request $request
      * @param Product $product
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      *
      * @SWG\Response(
      *     response=200,
@@ -109,6 +109,16 @@ class AdminProductController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
+
+            $orderItems = $this->getDoctrine()->getRepository('AppBundle:OrderItem')->findBy(['product' => $product]);
+            if ($orderItems != null && is_array($orderItems)) {
+                foreach ($orderItems as $orderItem) {
+                    if ($orderItem->getPurchase() === null) {
+                        $orderItem->setPrice($product->getFinalPrice());
+                        $em->persist($orderItem);
+                    }
+                }
+            }
             $em->flush();
 
             return new JsonResponse(SerializerManager::normalize($product));
