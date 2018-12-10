@@ -8,6 +8,7 @@ namespace AppBundle\Service;
 use AppBundle\Service\Normalizers\DateTimeNormalizer;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -23,16 +24,26 @@ class SerializerManager
 {
 
     /**
+     * @param $object
+     * @param array $groups
+     *
+     * @return JsonResponse
+     */
+    public static function normalizeAsJSONResponse($object, $groups = ['default'])
+    {
+        return new JsonResponse(self::normalize($object, $groups));
+    }
+
+    /**
      * @param mixed $object
-     * @param string $format
      * @param array $groups
      *
      * @return array|object
      */
-    public static function normalize($object, $format = 'json', $groups = ['default'])
+    public static function normalize($object, $groups = ['default'])
     {
         try {
-            return SerializerManager::getSerializers()->normalize($object, $format);
+            return self::getSerializers()->normalize($object, 'json', ['groups' => $groups]);
         } catch (AnnotationException $e) {
             return [];
         }
@@ -47,7 +58,16 @@ class SerializerManager
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
 
         $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new DateTimeNormalizer(), new ObjectNormalizer($classMetadataFactory)];
+
+        $objectNormalizer = new ObjectNormalizer($classMetadataFactory);
+        $objectNormalizer->setCircularReferenceLimit(1);
+        $objectNormalizer->setCircularReferenceHandler(
+            function ($object) {
+                return $object->getId();
+            }
+        );
+
+        $normalizers = [new DateTimeNormalizer(), $objectNormalizer];
 
         $serializer = new Serializer($normalizers, $encoders);
 

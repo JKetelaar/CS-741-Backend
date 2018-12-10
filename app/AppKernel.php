@@ -1,8 +1,8 @@
 <?php
 
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
@@ -19,7 +19,10 @@ class AppKernel extends Kernel
 
             // Bundles
             new JMS\SerializerBundle\JMSSerializerBundle(),
-            new FOS\RestBundle\FOSRestBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 
             // Custom
             new AppBundle\AppBundle(),
@@ -30,6 +33,9 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
 
+            // Bundles
+            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+
             if ('dev' === $this->getEnvironment()) {
                 $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
                 $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
@@ -37,11 +43,6 @@ class AppKernel extends Kernel
         }
 
         return $bundles;
-    }
-
-    public function getRootDir()
-    {
-        return __DIR__;
     }
 
     public function getCacheDir()
@@ -56,12 +57,19 @@ class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(function (ContainerBuilder $container) {
-            $container->setParameter('container.autowiring.strict_mode', true);
-            $container->setParameter('container.dumper.inline_class_loader', true);
+        $loader->load(
+            function (ContainerBuilder $container) {
+                $container->setParameter('container.autowiring.strict_mode', true);
+                $container->setParameter('container.dumper.inline_class_loader', true);
 
-            $container->addObjectResource($this);
-        });
+                $container->addObjectResource($this);
+            }
+        );
         $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+    }
+
+    public function getRootDir()
+    {
+        return __DIR__;
     }
 }
